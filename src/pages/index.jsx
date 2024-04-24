@@ -1,5 +1,6 @@
 import Head from "next/head";
-import React, { useState } from "react";
+import React from "react";
+import GanttChart from "../components/GanttChart/GanttChart";
 
 
 /* Домашнаяя страница */
@@ -13,8 +14,7 @@ const Home = () => (
     </Head>
     <main>
       <div>
-        <h1>Добро пожаловать на стартовую страницу</h1>
-    
+        <GanttChart/>
       </div>
 
     </main>

@@ -1,0 +1,13 @@
+.btnOpenModal svg {
+  display: block;
+  fill: none;
+  height: 26px;
+  width: 26px;
+  stroke: currentcolor;
+  stroke-width: 3;
+  overflow: visible;
+}
+
+.btnOpenModal svg path {
+  stroke: var(--btn-open-modal-color);
+}

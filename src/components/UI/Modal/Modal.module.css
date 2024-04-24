@@ -1,0 +1,34 @@
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /*   background-color: rgba(0, 0, 0, 0.5); */
+  min-height: 100vh;
+}
+
+.modalContent {
+  background-color: #ffffff;
+  padding: 1rem;
+  /*   border-radius: 0.5rem; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  width: 20rem;
+  height: 100vh;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.modalHeaderTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* .modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+ */

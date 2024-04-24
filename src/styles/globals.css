@@ -3,5 +3,14 @@
 @tailwind utilities;
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+:root {
+  --btn-open-modal-color: #222222; /* цвет кнопки открытия модалки*/
+}
+
+
+.m-r-10 {
+  margin-right: 10px;
 }
