@@ -1,0 +1,19 @@
+.calendarWrap {
+  position: relative;
+}
+
+.dateInput {
+  background: transparent;
+  min-width: 190px;
+}
+
+.calendar {
+  position: absolute;
+  z-index: 1;
+  left: -48px;
+  margin-top: 6px;
+}
+
+.dateRange {
+  border: 1px black solid;
+}

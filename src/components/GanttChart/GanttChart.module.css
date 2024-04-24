@@ -11,3 +11,16 @@
 .btnOpenModal svg path {
   stroke: var(--btn-open-modal-color);
 }
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 200px;
+  justify-content: space-around;
+}
+
+.dateRangeComp {
+  display: inline-flex;
+  align-items: center;
+}

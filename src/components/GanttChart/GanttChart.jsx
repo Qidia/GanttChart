@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal } from "../UI/Modal/Modal";
 import styles from "./GanttChart.module.css";
 import Select from "../UI/Select/Select";
+import DateRangeProduction from "../DateRangeProduction/DateRangeProduction";
 
 const GanttChart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,10 +41,13 @@ const GanttChart = () => {
         </svg>
       </button>
       <Modal isOpen={isModalOpen} titleModal="Управление" onClose={closeModal}>
-        <div>
-          <p>Дата</p>
+        <div className={styles.modalContent}>
+          <div className={styles.dateRangeComp} >
+            <p className="m-r-10">Дата:</p>
+            <DateRangeProduction/>
+          </div>
           <Select options={options} label="Цвет:" disabled={false} />
-          <p>Наименование</p>
+          <p>Наименования</p>
           <p>Легенда</p>
           <p>Линия</p>
         </div>
