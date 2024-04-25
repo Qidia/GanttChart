@@ -1,0 +1,19 @@
+.dateStripContainer {
+  display: flex;
+  overflow: hidden;
+}
+
+.dateStrip {
+  display: flex;
+  flex-wrap: nowrap; /* Запрещаем перенос элементов на новую строку */
+}
+
+.date {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.date:last-child {
+  margin-right: 0;
+}

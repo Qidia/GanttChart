@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import GanttChart from "../components/GanttChart/GanttChart";
-
+import DataProvider from "../components/DataProvider/DataProvider";
 
 /* Домашнаяя страница */
 const Home = () => (
@@ -14,9 +14,10 @@ const Home = () => (
     </Head>
     <main>
       <div>
-        <GanttChart/>
+        <DataProvider>
+          <GanttChart />
+        </DataProvider>
       </div>
-
     </main>
   </>
 );
