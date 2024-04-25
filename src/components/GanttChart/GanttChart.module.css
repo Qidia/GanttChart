@@ -1,0 +1,22 @@
+.management {
+    position: absolute;
+  /*   z-index: 1;
+    background: red; */
+}
+
+.container {
+/*     width: 100vh;
+ */    height: 100vh;
+    background: aqua;
+    display: flex;
+}
+
+.names {
+    background: red;
+    width: 35%;
+}
+
+.charts {
+    background: rebeccapurple;
+    width: 100%;
+}
