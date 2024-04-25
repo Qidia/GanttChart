@@ -1,0 +1,26 @@
+.btnOpenModal svg {
+  display: block;
+  fill: none;
+  height: 26px;
+  width: 26px;
+  stroke: currentcolor;
+  stroke-width: 3;
+  overflow: visible;
+}
+
+.btnOpenModal svg path {
+  stroke: var(--btn-open-modal-color);
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 200px;
+  justify-content: space-around;
+}
+
+.dateRangeComp {
+  display: inline-flex;
+  align-items: center;
+}
