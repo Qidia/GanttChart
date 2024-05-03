@@ -14,6 +14,7 @@
 
 .verticalLine {
   border-left: 1px solid black;
+  height: 100%;
 }
 
 .containerHorizontalLine {
@@ -29,8 +30,17 @@
   border-bottom: 1px solid black;
 }
 
-/* .date {
-  transform: rotate(-90deg);
+.date {
+  transform: rotate(90deg);
   white-space: nowrap;
-  margin-bottom: 10px; 
-} */
+  width: 0;
+  height: 0;
+  margin-left: 25px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+}

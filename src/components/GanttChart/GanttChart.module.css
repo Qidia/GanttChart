@@ -1,14 +1,9 @@
 .management {
   position: absolute;
-  /*   z-index: 1;
-    background: red; */
 }
 
 .container {
-  /*     width: 100vh;
- */
   height: 100vh;
-
   background: aqua;
   display: flex;
 }
@@ -21,32 +16,11 @@
 .containerСharts {
   background: rebeccapurple;
   width: 100%;
-
-  display: flex;
-  flex-direction: column;
   margin-left: 20px;
 }
 
 .charts {
   background: olivedrab;
   height: 100vh;
-}
-
-.date {
-  background: orange;
-  height: 20%;
-}
-
-.comp {
-  width: 100px;
-  height: 100px;
-  background: rgb(94, 231, 78);
-  margin: 0 auto;
-}
-
-.comp2 {
-  width: 100px;
-  height: 100px;
-  background: rgb(96, 234, 236);
-  margin: 0 auto;
+  padding-bottom: 80px;
 }

@@ -38,8 +38,18 @@ const Grid = ({ data }) => {
     // Количество дней между самой ранней и самой поздней датами
     const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
 
-    return Array.from({ length: totalDays }, (_, index) => (
-      <div key={index} className={styles.verticalLine} />
+    // Создаем массив дат между минимальной и максимальной датами
+    const dateArray = Array.from({ length: totalDays }, (_, index) => {
+      const currentDate = new Date(minDate);
+      currentDate.setDate(currentDate.getDate() + index);
+      return currentDate;
+    });
+
+    return dateArray.map((date, index) => (
+      <div key={index} className={styles.flex}>
+        <div className={styles.verticalLine} />
+        <div className={styles.date}>{date.toLocaleDateString()}</div>
+      </div>
     ));
   };
 
