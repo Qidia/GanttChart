@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import styles from "./GanttChart.module.css";
 import ZoomControl from "../ZoomControl/ZoomControl";
+import Grid from "../Grid/Grid";
 import DateStrip from "../DateStrip/DateStrip";
 
 const GanttChart = ({ data }) => {
@@ -21,22 +22,12 @@ const GanttChart = ({ data }) => {
         <div className={styles.containerСharts}>
           <div className={styles.charts}>
             <ZoomControl>
-              <div>
-                <div className={styles.comp}></div>
-                <br />
-                <div className={styles.comp}></div>
-                <br />
-                <div className={styles.comp}></div>
-              </div>
+              <Grid data={data}></Grid>
             </ZoomControl>
           </div>
 
           <div className={styles.date}>
-            {/*             <ZoomControl>
-              <div className={styles.comp2}></div>
-            </ZoomControl>
-            */}
-            <DateStrip tasks={data} />
+            {/* <DateStrip /> */}
           </div>
         </div>
       </div>

@@ -1,0 +1,36 @@
+.grid {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.containerVerticalLine {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  position: absolute;
+}
+
+.verticalLine {
+  border-left: 1px solid black;
+}
+
+.containerHorizontalLine {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.horizontalLine {
+  border-bottom: 1px solid black;
+}
+
+/* .date {
+  transform: rotate(-90deg);
+  white-space: nowrap;
+  margin-bottom: 10px; 
+} */

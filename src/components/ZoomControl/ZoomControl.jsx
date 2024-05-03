@@ -34,6 +34,7 @@ const ZoomControl = ({ children }) => {
     <div
       onWheel={handleWheel}
       style={{ transform: `scale(${zoomLevel})` }}
+      className={styles.container}
     >
       {children}
     </div>
