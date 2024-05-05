@@ -3,7 +3,6 @@ import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import styles from "./GanttChart.module.css";
 import ZoomControl from "../ZoomControl/ZoomControl";
 import Grid from "../Grid/Grid";
-import DateStrip from "../DateStrip/DateStrip";
 
 const GanttChart = ({ data }) => {
   const [isNamesVisible, setIsNamesVisible] = useState(false);
@@ -21,11 +20,11 @@ const GanttChart = ({ data }) => {
 
         <div className={styles.containerСharts}>
           <div className={styles.charts}>
-            {/*             <ZoomControl>
-             */}{" "}
+                        <ZoomControl>
+             
             <Grid data={data}></Grid>
-            {/*             </ZoomControl>
-             */}{" "}
+                        </ZoomControl>
+             
           </div>
 
         </div>

@@ -22,5 +22,7 @@
 .charts {
   background: olivedrab;
   height: 100vh;
+  padding: 0 10px;
   padding-bottom: 80px;
+  margin: 0 10px;
 }

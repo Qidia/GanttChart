@@ -83,22 +83,21 @@ const Grid = ({ data }) => {
       return department.tasks.map((task) => {
         const taskStartDate = new Date(task.startDate);
         const taskEndDate = new Date(task.endDate);
-        const top = ((department.id - 1) * 100) / data.length;
-        const height = 100 / data.length;
-        const left =
-          dateRange.findIndex(
-            (date) => date.getTime() === taskStartDate.getTime()
-          ) *
-          (100 / dateRange.length);
-        const width =
-          (dateRange.findIndex(
-            (date) => date.getTime() === taskEndDate.getTime()
-          ) -
-            dateRange.findIndex(
-              (date) => date.getTime() === taskStartDate.getTime()
-            ) +
-            1) * // добавляем 1 для включения последнего дня
-          (100 / dateRange.length);
+
+        // Находим координаты вертикальных линий, соответствующих датам начала и окончания задачи
+        const startLine = dateRange.findIndex(
+          (date) => date.getTime() === taskStartDate.getTime()
+        );
+        const endLine = dateRange.findIndex(
+          (date) => date.getTime() === taskEndDate.getTime()
+        );
+
+        // Определяем координаты краев прямоугольника задачи относительно соответствующих вертикальных линий
+        const left = ((startLine * 100) / (dateRange.length - 1) + 0.05); // учитываем, что вертикальные линии должны быть равномерно распределены
+        const width = (((endLine - startLine) * 100) / (dateRange.length - 1) - 0.06 ); // Добавляем 1 для включения последней даты
+
+        const top = (((department.id - 1) * 100) / data.length ) + 0.13;
+        const height = (100 / data.length) - 0.24 ;
 
         const randomColor =
           "#" + Math.floor(Math.random() * 16777215).toString(16); // Генерация случайного цвета
@@ -130,7 +129,6 @@ const Grid = ({ data }) => {
 
         <div className={styles.containerHorizontalLine}>
           <div className={styles.horizontalLine}></div>
-          {/* Рендер горизонтальных линий и прямоугольников задач */}
           {renderHorizontalLines()}
           {renderTaskRectangles()}
         </div>
