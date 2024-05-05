@@ -36,7 +36,7 @@ const Grid = ({ data }) => {
     }
 
     // Количество дней между самой ранней и самой поздней датами
-    const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
+    const totalDays = Math.ceil( ( (maxDate - minDate) / (1000 * 60 * 60 * 24)) +1 );
 
     // Создаем массив дат между минимальной и максимальной датами
     const dateArray = Array.from({ length: totalDays }, (_, index) => {
