@@ -80,7 +80,10 @@ const Grid = ({ data }) => {
     }
 
     return data.map((department) => {
-      return department.tasks.map((task) => {
+      // Определение высоты строки для текущего департамента
+      const departmentHeight = 100 / data.length;
+
+      return department.tasks.map((task, index) => {
         const taskStartDate = new Date(task.startDate);
         const taskEndDate = new Date(task.endDate);
 
@@ -96,8 +99,10 @@ const Grid = ({ data }) => {
         const left = (startLine * 100) / (dateRange.length - 1); // учитываем, что вертикальные линии должны быть равномерно распределены
         const width = ((endLine - startLine) * 100) / (dateRange.length - 1); // Добавляем 1 для включения последней даты
 
-        const top = ((department.id - 1) * 100) / data.length;
-        const height = 100 / data.length;
+        // Определение top для каждой задачи в зависимости от индекса
+        const top =
+          ((department.id - 1) * 100) / data.length +
+          (index * departmentHeight) / department.tasks.length;
 
         // Используем цвет задачи из данных
         const taskColor = task.color;
@@ -108,7 +113,7 @@ const Grid = ({ data }) => {
             className={styles.taskRectangle}
             style={{
               top: `${top}%`,
-              height: `${height}%`,
+              height: `${departmentHeight / department.tasks.length}%`, // устанавливаем высоту для каждой задачи
               left: `${left}%`,
               width: `${width}%`,
               backgroundColor: taskColor,
@@ -128,8 +133,12 @@ const Grid = ({ data }) => {
         </div>
 
         <div className={styles.containerHorizontalLine}>
-          <div className={styles.horizontalLine}></div>
-          {renderHorizontalLines()}
+          
+{/*           <div className={styles.horizontalLine}></div>
+ */}
+
+ {/*           {renderHorizontalLines()}
+ */}
           {renderTaskRectangles()}
         </div>
       </div>
