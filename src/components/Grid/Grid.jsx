@@ -93,14 +93,14 @@ const Grid = ({ data }) => {
         );
 
         // Определяем координаты краев прямоугольника задачи относительно соответствующих вертикальных линий
-        const left = ((startLine * 100) / (dateRange.length - 1) + 0.05); // учитываем, что вертикальные линии должны быть равномерно распределены
-        const width = (((endLine - startLine) * 100) / (dateRange.length - 1) - 0.06 ); // Добавляем 1 для включения последней даты
+        const left = (startLine * 100) / (dateRange.length - 1); // учитываем, что вертикальные линии должны быть равномерно распределены
+        const width = ((endLine - startLine) * 100) / (dateRange.length - 1); // Добавляем 1 для включения последней даты
 
-        const top = (((department.id - 1) * 100) / data.length ) + 0.13;
-        const height = (100 / data.length) - 0.24 ;
+        const top = ((department.id - 1) * 100) / data.length;
+        const height = 100 / data.length;
 
-        const randomColor =
-          "#" + Math.floor(Math.random() * 16777215).toString(16); // Генерация случайного цвета
+        // Используем цвет задачи из данных
+        const taskColor = task.color;
 
         return (
           <div
@@ -111,7 +111,7 @@ const Grid = ({ data }) => {
               height: `${height}%`,
               left: `${left}%`,
               width: `${width}%`,
-              backgroundColor: randomColor,
+              backgroundColor: taskColor,
             }}
           />
         );
