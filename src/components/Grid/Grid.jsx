@@ -67,62 +67,59 @@ const Grid = ({ data }) => {
   };
 
   // Функция для рендеринга прямоугольников задач
-  const renderTaskRectangles = () => {
-    if (!minDate || !maxDate) {
-      return null;
-    }
+const renderTaskRectangles = () => {
+  if (!minDate || !maxDate) {
+    return null;
+  }
 
-    const dateRange = [];
-    let currentDate = new Date(minDate);
-    while (currentDate <= maxDate) {
-      dateRange.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+  const dateRange = [];
+  let currentDate = new Date(minDate);
+  while (currentDate <= maxDate) {
+    dateRange.push(new Date(currentDate));
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
 
-    return data.map((department) => {
-      // Определение высоты строки для текущего департамента
-      const departmentHeight = 100 / data.length;
+  return data.map((department, deptIndex) => {
+    // Определение высоты строки для текущего департамента с учетом зазора
+    const departmentHeight = 100 / (data.length * 2); 
 
-      return department.tasks.map((task, index) => {
-        const taskStartDate = new Date(task.startDate);
-        const taskEndDate = new Date(task.endDate);
+    return department.tasks.map((task, index) => {
+      const taskStartDate = new Date(task.startDate);
+      const taskEndDate = new Date(task.endDate);
 
-        // Находим координаты вертикальных линий, соответствующих датам начала и окончания задачи
-        const startLine = dateRange.findIndex(
-          (date) => date.getTime() === taskStartDate.getTime()
-        );
-        const endLine = dateRange.findIndex(
-          (date) => date.getTime() === taskEndDate.getTime()
-        );
+      const startLine = dateRange.findIndex(
+        (date) => date.getTime() === taskStartDate.getTime()
+      );
+      const endLine = dateRange.findIndex(
+        (date) => date.getTime() === taskEndDate.getTime()
+      );
 
-        // Определяем координаты краев прямоугольника задачи относительно соответствующих вертикальных линий
-        const left = (startLine * 100) / (dateRange.length - 1); // учитываем, что вертикальные линии должны быть равномерно распределены
-        const width = ((endLine - startLine) * 100) / (dateRange.length - 1); // Добавляем 1 для включения последней даты
+      const left = (startLine * 100) / (dateRange.length - 1);
+      const width = ((endLine - startLine) * 100) / (dateRange.length - 1);
 
-        // Определение top для каждой задачи в зависимости от индекса
-        const top =
-          ((department.id - 1) * 100) / data.length +
-          (index * departmentHeight) / department.tasks.length;
+      // Рассчитываем вертикальную позицию с учетом зазора между департаментами
+      const top =
+        ((deptIndex * 2 + 0.3) * 100) / (data.length * 2) +
+        (index * departmentHeight) / department.tasks.length;
 
-        // Используем цвет задачи из данных
-        const taskColor = task.color;
+      const taskColor = task.color;
 
-        return (
-          <div
-            key={task.id}
-            className={styles.taskRectangle}
-            style={{
-              top: `${top}%`,
-              height: `${departmentHeight / department.tasks.length}%`, // устанавливаем высоту для каждой задачи
-              left: `${left}%`,
-              width: `${width}%`,
-              backgroundColor: taskColor,
-            }}
-          />
-        );
-      });
+      return (
+        <div
+          key={task.id}
+          className={styles.taskRectangle}
+          style={{
+            top: `${top}%`,
+            height: `${departmentHeight / department.tasks.length}%`,
+            left: `${left}%`,
+            width: `${width}%`,
+            backgroundColor: taskColor,
+          }}
+        />
+      );
     });
-  };
+  });
+};
 
   return (
     <>
