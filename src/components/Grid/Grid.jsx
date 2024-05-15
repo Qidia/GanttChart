@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Grid.module.css";
 
 const Grid = ({ data }) => {
@@ -28,26 +28,57 @@ const Grid = ({ data }) => {
   };
 
   const { minDate, maxDate } = findMinMaxDates();
+  const [currentMinDate, setCurrentMinDate] = useState(minDate);
+  const [currentMaxDate, setCurrentMaxDate] = useState(maxDate);
+
+  // Функция для обработки события прокрутки колесика мыши
+  const handleWheelScroll = (e) => {
+    e.preventDefault();
+    const delta = Math.sign(e.deltaY); // Определяем направление прокрутки
+
+    const newMinDate = new Date(currentMinDate);
+    const newMaxDate = new Date(currentMaxDate);
+    const daysDifference = Math.ceil((newMaxDate - newMinDate) / (1000 * 60 * 60 * 24));
+
+    // Обновляем текущий интервал дат в зависимости от направления прокрутки
+    if (delta > 0) {
+      // Zooming in
+      newMinDate.setDate(newMinDate.getDate() + 1);
+      newMaxDate.setDate(newMaxDate.getDate() - 1);
+    } else if (daysDifference > 1) {
+      // Zooming out
+      newMinDate.setDate(newMinDate.getDate() - 1);
+      newMaxDate.setDate(newMaxDate.getDate() + 1);
+    }
+
+    setCurrentMinDate(newMinDate);
+    setCurrentMaxDate(newMaxDate);
+  };
 
   // Функция для рендеринга вертикальных линий
   const renderVerticalLines = () => {
-    if (!minDate || !maxDate) {
+    if (!currentMinDate || !currentMaxDate) {
       return null;
     }
 
-    // Количество дней между самой ранней и самой поздней датами
-    const totalDays = Math.ceil(
-      (maxDate - minDate) / (1000 * 60 * 60 * 24) + 1
-    );
+    // Максимальное количество вертикальных линий
+    const maxVerticalLines = 15;
 
-    // Создаем массив дат между минимальной и максимальной датами
-    const dateArray = Array.from({ length: totalDays }, (_, index) => {
-      const currentDate = new Date(minDate);
-      currentDate.setDate(currentDate.getDate() + index);
-      return currentDate;
-    });
+    // Количество дней между текущей самой ранней и самой поздней датами
+    const totalDays = Math.ceil((currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24));
 
-    return dateArray.map((date, index) => (
+    // Шаг между вертикальными линиями
+    const step = totalDays / (maxVerticalLines - 1);
+
+    // Массив дат с равным интервалом между ними на основе шага
+    const dateArray = [];
+    for (let i = 0; i < maxVerticalLines; i++) {
+      const currentDate = new Date(currentMaxDate);
+      currentDate.setDate(currentMaxDate.getDate() - Math.round(step * i));
+      dateArray.push(currentDate);
+    }
+
+    return dateArray.reverse().map((date, index) => (
       <div key={index} className={styles.flex}>
         <div className={styles.verticalLine} />
         <div className={styles.date}>{date.toLocaleDateString()}</div>
@@ -55,87 +86,66 @@ const Grid = ({ data }) => {
     ));
   };
 
-  // Функция для рендеринга горизонтальных линий
-  const renderHorizontalLines = () => {
-    if (!data || data.length === 0) {
+  const renderTaskRectangles = () => {
+    if (!minDate || !maxDate) {
       return null;
     }
 
-    return data.map((department) => (
-      <div key={department.id} className={styles.horizontalLine} />
-    ));
-  };
+    const dateRange = [];
+    let currentDate = new Date(minDate);
+    while (currentDate <= maxDate) {
+      dateRange.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
 
-  // Функция для рендеринга прямоугольников задач
-const renderTaskRectangles = () => {
-  if (!minDate || !maxDate) {
-    return null;
-  }
+    return data.map((department, deptIndex) => {
+      const departmentHeight = 100 / (data.length * 2);
 
-  const dateRange = [];
-  let currentDate = new Date(minDate);
-  while (currentDate <= maxDate) {
-    dateRange.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
+      return department.tasks.map((task, index) => {
+        const taskStartDate = new Date(task.startDate);
+        const taskEndDate = new Date(task.endDate);
 
-  return data.map((department, deptIndex) => {
-    // Определение высоты строки для текущего департамента с учетом зазора
-    const departmentHeight = 100 / (data.length * 2); 
+        const startLine = dateRange.findIndex(
+          (date) => date.getTime() === taskStartDate.getTime()
+        );
+        const endLine = dateRange.findIndex(
+          (date) => date.getTime() === taskEndDate.getTime()
+        );
 
-    return department.tasks.map((task, index) => {
-      const taskStartDate = new Date(task.startDate);
-      const taskEndDate = new Date(task.endDate);
+        const left = (startLine * 100) / (dateRange.length - 1);
+        const width = ((endLine - startLine) * 100) / (dateRange.length - 1);
 
-      const startLine = dateRange.findIndex(
-        (date) => date.getTime() === taskStartDate.getTime()
-      );
-      const endLine = dateRange.findIndex(
-        (date) => date.getTime() === taskEndDate.getTime()
-      );
+        const top =
+          ((deptIndex * 2 + 0.3) * 100) / (data.length * 2) +
+          (index * departmentHeight) / department.tasks.length;
 
-      const left = (startLine * 100) / (dateRange.length - 1);
-      const width = ((endLine - startLine) * 100) / (dateRange.length - 1);
+        const taskColor = task.color;
 
-      // Рассчитываем вертикальную позицию с учетом зазора между департаментами
-      const top =
-        ((deptIndex * 2 + 0.3) * 100) / (data.length * 2) +
-        (index * departmentHeight) / department.tasks.length;
-
-      const taskColor = task.color;
-
-      return (
-        <div
-          key={task.id}
-          className={styles.taskRectangle}
-          style={{
-            top: `${top}%`,
-            height: `${departmentHeight / department.tasks.length}%`,
-            left: `${left}%`,
-            width: `${width}%`,
-            backgroundColor: taskColor,
-          }}
-        />
-      );
+        return (
+          <div
+            key={task.id}
+            className={styles.taskRectangle}
+            style={{
+              top: `${top}%`,
+              height: `${departmentHeight / department.tasks.length}%`,
+              left: `${left}%`,
+              width: `${width}%`,
+              backgroundColor: taskColor,
+            }}
+          />
+        );
+      });
     });
-  });
-};
+  };
 
   return (
     <>
-      <div className={styles.grid}>
+      <div className={styles.grid} onWheelCapture={handleWheelScroll}>
         <div className={styles.containerVerticalLine}>
-          {/* Рендер вертикальных линий и дат */}
           {renderVerticalLines()}
         </div>
 
         <div className={styles.containerHorizontalLine}>
-          
-{/*           <div className={styles.horizontalLine}></div>
- */}
-
- {/*           {renderHorizontalLines()}
- */}
           {renderTaskRectangles()}
         </div>
       </div>

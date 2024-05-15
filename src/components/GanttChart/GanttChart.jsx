@@ -20,11 +20,11 @@ const GanttChart = ({ data }) => {
 
         <div className={styles.containerСharts}>
           <div className={styles.charts}>
-                        <ZoomControl>
-             
+{/*                         <ZoomControl>
+ */}             
             <Grid data={data}></Grid>
-                        </ZoomControl>
-             
+{/*                         </ZoomControl>
+ */}             
           </div>
 
         </div>
