@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Grid.module.css";
+import HorizontalLine from "../HorizontalLine/HorizontalLine";
 
-const Grid = ({ data }) => {
+const Grid = ({ data, isLineVisible }) => {
   // Функция для нахождения самой ранней и самой поздней даты
   const findMinMaxDates = () => {
     if (!data || data.length === 0) {
@@ -38,7 +39,9 @@ const Grid = ({ data }) => {
 
     const newMinDate = new Date(currentMinDate);
     const newMaxDate = new Date(currentMaxDate);
-    const daysDifference = Math.ceil((newMaxDate - newMinDate) / (1000 * 60 * 60 * 24));
+    const daysDifference = Math.ceil(
+      (newMaxDate - newMinDate) / (1000 * 60 * 60 * 24)
+    );
 
     // Обновляем текущий интервал дат в зависимости от направления прокрутки
     if (delta > 0) {
@@ -65,7 +68,9 @@ const Grid = ({ data }) => {
     const maxVerticalLines = 15;
 
     // Количество дней между текущей самой ранней и самой поздней датами
-    const totalDays = Math.ceil((currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24));
+    const totalDays = Math.ceil(
+      (currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24)
+    );
 
     // Шаг между вертикальными линиями
     const step = totalDays / (maxVerticalLines - 1);
@@ -91,13 +96,6 @@ const Grid = ({ data }) => {
       return null;
     }
 
-    const dateRange = [];
-    let currentDate = new Date(minDate);
-    while (currentDate <= maxDate) {
-      dateRange.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
     return data.map((department, deptIndex) => {
       const departmentHeight = 100 / (data.length * 2);
 
@@ -105,15 +103,23 @@ const Grid = ({ data }) => {
         const taskStartDate = new Date(task.startDate);
         const taskEndDate = new Date(task.endDate);
 
-        const startLine = dateRange.findIndex(
-          (date) => date.getTime() === taskStartDate.getTime()
+        if (taskStartDate < currentMinDate || taskEndDate > currentMaxDate) {
+          return null;
+        }
+
+        const totalDays = Math.ceil(
+          (currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24)
         );
-        const endLine = dateRange.findIndex(
-          (date) => date.getTime() === taskEndDate.getTime()
+        const daysFromStart = Math.ceil(
+          (taskStartDate - currentMinDate) / (1000 * 60 * 60 * 24)
+        );
+        const daysFromEnd = Math.ceil(
+          (currentMaxDate - taskEndDate) / (1000 * 60 * 60 * 24)
         );
 
-        const left = (startLine * 100) / (dateRange.length - 1);
-        const width = ((endLine - startLine) * 100) / (dateRange.length - 1);
+        const left = (daysFromStart / totalDays) * 100;
+        const width =
+          ((totalDays - daysFromStart - daysFromEnd) / totalDays) * 100;
 
         const top =
           ((deptIndex * 2 + 0.3) * 100) / (data.length * 2) +
@@ -147,6 +153,7 @@ const Grid = ({ data }) => {
 
         <div className={styles.containerHorizontalLine}>
           {renderTaskRectangles()}
+          {isLineVisible && <HorizontalLine />}
         </div>
       </div>
     </>

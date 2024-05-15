@@ -6,7 +6,7 @@ import Grid from "../Grid/Grid";
 
 const GanttChart = ({ data }) => {
   const [isNamesVisible, setIsNamesVisible] = useState(false);
-  console.log(data); // работает
+  const [isLineVisible, setIsLineVisible] = useState(false);
 
   return (
     <>
@@ -14,19 +14,20 @@ const GanttChart = ({ data }) => {
         className={styles.management}
         isNamesVisible={isNamesVisible} // Передаем состояние в GanttChartManagement
         setIsNamesVisible={setIsNamesVisible} // Передаем функцию для обновления состояния
+        isLineVisible={isLineVisible}
+        setIsLineVisible={setIsLineVisible}
       />
       <div className={styles.container}>
         {isNamesVisible && <div className={styles.names}></div>}
 
         <div className={styles.containerСharts}>
           <div className={styles.charts}>
-{/*                         <ZoomControl>
- */}             
-            <Grid data={data}></Grid>
-{/*                         </ZoomControl>
- */}             
+            {/*                         <ZoomControl>
+             */}
+            <Grid data={data} isLineVisible={isLineVisible}></Grid>
+            {/*                         </ZoomControl>
+             */}
           </div>
-
         </div>
       </div>
     </>
