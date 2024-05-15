@@ -4,17 +4,17 @@
   left: 0;
   /*   background-color: rgba(0, 0, 0, 0.5); */
   min-height: 100vh;
+  z-index: 1;
 }
 
 .modalContent {
-  background-color: #ffffff;
   padding: 1rem;
   /*   border-radius: 0.5rem; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     width: 20rem;
 
-  height: 100vh;
-  background: beige;
+/*   height: 100vh;
+ */  background: #ffffff;
 }
 
 .modalHeader {
