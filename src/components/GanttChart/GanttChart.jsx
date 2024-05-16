@@ -3,6 +3,7 @@ import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import styles from "./GanttChart.module.css";
 import ZoomControl from "../ZoomControl/ZoomControl";
 import Grid from "../Grid/Grid";
+import Button from "../UI/Button/Button";
 
 const GanttChart = ({ data }) => {
   const [isNamesVisible, setIsNamesVisible] = useState(false);
@@ -17,8 +18,20 @@ const GanttChart = ({ data }) => {
         isLineVisible={isLineVisible}
         setIsLineVisible={setIsLineVisible}
       />
+
       <div className={styles.container}>
-        {isNamesVisible && <div className={styles.names}></div>}
+        {isNamesVisible && (
+          <div className={styles.departmentsNames}>
+            <h3>Список подразделений</h3>
+            <div className={styles.departmentName}>
+              {data.map((department) => (
+                <Button key={department.id} className={styles.departmentButton}>
+                  {department.name}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className={styles.containerСharts}>
           <div className={styles.charts}>
