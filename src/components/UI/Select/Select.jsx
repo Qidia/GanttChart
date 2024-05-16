@@ -5,9 +5,10 @@ import styles from "./Select.module.css";
  * Компонент выпадающего списка.
  * @param {Object} props - Свойства компонента.
  * @param {Array} props.options - Массив объектов-опций для выбора.
+ * @param {Function} props.onSelectChange - Обработчик изменения выбранной опции.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
-const Select = ({ options, disabled, label }) => {
+const Select = ({ options, disabled, label, onSelectChange, className }) => {
   const [isOpen, setIsOpen] = useState(false); // Состояние, отвечающее за открытие/закрытие списка
   const [selectedOption, setSelectedOption] = useState(""); // Состояние, отвечающее за выбранную опцию
   const selectRef = useRef(null); // Реф для доступа к DOM-элементу списка
@@ -32,8 +33,16 @@ const Select = ({ options, disabled, label }) => {
    * @param {Object} option - Выбранная опция.
    */
   const handleOptionClick = (option) => {
+    if (option.label === selectedOption) {
+      setIsOpen(false);
+      return;
+    }
+
     setSelectedOption(option.label);
     setIsOpen(false);
+    if (onSelectChange) {
+      onSelectChange(option);
+    }
   };
 
   /**
@@ -79,8 +88,9 @@ const Select = ({ options, disabled, label }) => {
   }, [options]);
 
   return (
-    <div className={styles.select} ref={selectRef}>
+    <div className={`${styles.select} ${className}`} ref={selectRef}>
       {label && <div className='m-r-10'>{label}</div>}
+
       <input
         type="text"
         disabled={disabled}
@@ -88,17 +98,20 @@ const Select = ({ options, disabled, label }) => {
         onChange={handleInputChange}
         onClick={handleToggle}
         readOnly
-        className={`${styles.input} ${
+        className={`${styles.input}  ${
           disabled ? styles.disabled : styles.enabled
         }`}
       />
+
       {isOpen && (
         <div className={styles.dropdown}>
           {options.map((option, index) => (
             <div
               key={index}
               onClick={() => handleOptionClick(option)}
-              className={styles.option}
+              className={`m-b-4 ${styles.option} ${
+                option.label === selectedOption ? styles.selectedOption : ""
+              }`}
             >
               {option.label}
             </div>

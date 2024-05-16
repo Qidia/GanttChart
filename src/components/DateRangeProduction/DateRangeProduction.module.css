@@ -9,11 +9,12 @@
 
 .calendar {
   position: absolute;
+  width: 100%;
   z-index: 1;
-  left: -48px;
-  margin-top: 6px;
+  padding-top: 4px;
 }
 
 .dateRange {
   border: 1px black solid;
+  width: 100%;
 }

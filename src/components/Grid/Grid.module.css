@@ -26,6 +26,15 @@
   margin-left: 13px;
 }
 
+.containerHorizontalLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* Ensure the horizontal line is on top */
+}
+
 .flex {
   display: flex;
   flex-direction: column;

@@ -32,10 +32,14 @@ const GanttChartManagement = ({
     setIsLineVisible(newValue);
   };
 
+  const handleSelectChange = (selectedOption) => {
+    console.log(`Выбрали ${selectedOption.label}`);
+  };
+
   const options = [
     { label: "По подразделениям" },
     { label: "По статусу" },
-    { label: "По дисциплине потока" },
+    { label: "По дисциплине потока"},
   ];
 
   return (
@@ -58,26 +62,28 @@ const GanttChartManagement = ({
         </button>
         <Modal
           isOpen={isModalOpen}
-          titleModal="Управление"
+          titleModal="Панель управления"
           onClose={closeModal}
         >
           <div className={styles.modalContent}>
-            <div className={styles.dateRangeComp}>
+            <div className={`${styles.dateRangeComp} m-b-10`}>
               <p className="m-r-10">Дата:</p>
               <DateRangeProduction />
             </div>
-            <Select options={options} label="Цвет:" disabled={false} />
+            <Select options={options} label="Цвет:" disabled={false} onSelectChange={handleSelectChange} className = "m-b-10"/>
             <Checkbox
               label="Наименования"
               checked={isChecked}
               onChange={handleCheckboxChange}
+              className= "m-b-10"
             />
-            <Checkbox label="Легенда" checked={isChecked} onChange={() => {}} />
+            <Checkbox label="Легенда" onChange={() => {}} className = "m-b-10" />
 
             <Checkbox
-              label="Линия"
+              label="Горизонтальная линия"
               checked={isLineVisible}
               onChange={handleLineCheckboxChange}
+              className = "m-b-10"
             />
           </div>
         </Modal>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Checkbox.module.css";
 
-const Checkbox = ({ label, checked, onChange }) => {
+const Checkbox = ({ label, checked, onChange, className }) => {
   // Состояние для отслеживания состояния чекбокса
   const [isChecked, setIsChecked] = useState(checked || false);
 
@@ -13,7 +13,7 @@ const Checkbox = ({ label, checked, onChange }) => {
   };
 
   return (
-    <label className={styles.checkbox}>
+    <label className={`${styles.checkbox} ${className}`}>
       {/* Чекбокс */}
       <input
         type="checkbox"

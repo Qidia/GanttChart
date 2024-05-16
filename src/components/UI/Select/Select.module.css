@@ -1,36 +1,42 @@
 .select {
   position: relative;
-  display: inline-flex;
-  align-items: center;
 }
 
 .input {
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 3px;
-  background-color: #f0f0f0;
   cursor: pointer;
+  width: 100%;
+  padding: 8px;
+
+/*   padding: 3px;
+  background-color: #f0f0f0;
   outline: none;
   width: 195px;
   text-align: center;
+ */}
+
+
+.disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
 }
 
-/* .input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-} */
+.enabled {
+  background-color: #fff;
+}
 
 .dropdown {
   position: absolute;
-  /*   width: 100%; */
-  padding: 8px;
-  background-color: #fff;
+  width: 100%;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  width: 195px;
-  top: 40px;
-  right: 0;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  padding: 5px;
+  padding-bottom: 1px;
+  margin-top: 4px;
 }
 
 .option {
@@ -42,3 +48,9 @@
 .option:hover {
   background-color: #f0f0f0;
 }
+
+.selectedOption {
+  background-color: #e6e6e6;
+  pointer-events: none; /* чтобы нельзя было кликнуть на выбранную опцию */
+}
+
