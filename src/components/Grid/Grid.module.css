@@ -1,3 +1,4 @@
+/* Grid.module.css */
 .grid {
   width: 100%;
   height: 100%;
@@ -10,24 +11,12 @@
   height: 100%;
   justify-content: space-between;
   position: absolute;
+  z-index: 1;
 }
 
 .verticalLine {
   border-left: 1px solid black;
   height: 100%;
-}
-
-.containerHorizontalLine {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.horizontalLine {
-  border-bottom: 1px solid black;
 }
 
 .date {
@@ -43,9 +32,28 @@
   width: 0;
 }
 
-.taskRectangle {
+.tasksContainer {
   position: absolute;
-  margin-bottom: 10px
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
 }
 
+.department {
+  position: relative;
+  margin-top: 30px;
+}
+
+.task {
+  position: absolute;
+  height: 20px;
+  top: 0;
+}
+
+.taskRectangle {
+  position: absolute;
+
+}
 
