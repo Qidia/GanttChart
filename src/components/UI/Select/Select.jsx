@@ -6,20 +6,20 @@ import styles from "./Select.module.css";
  * @param {Object} props - Свойства компонента.
  * @param {Array} props.options - Массив объектов-опций для выбора.
  * @param {Function} props.onSelectChange - Обработчик изменения выбранной опции.
+ * @param {String} props.selectedOption - Начально выбранная опция.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
-const Select = ({ options, disabled, label, onSelectChange, className }) => {
-  const [isOpen, setIsOpen] = useState(false); // Состояние, отвечающее за открытие/закрытие списка
-  const [selectedOption, setSelectedOption] = useState(""); // Состояние, отвечающее за выбранную опцию
-  const selectRef = useRef(null); // Реф для доступа к DOM-элементу списка
-
-  /**
-   * Обработчик изменения значения ввода.
-   * @param {Object} event - Событие изменения значения ввода.
-   */
-  const handleInputChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+const Select = ({
+  options,
+  disabled,
+  label,
+  onSelectChange,
+  className,
+  selectedOption,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentOption, setCurrentOption] = useState(selectedOption);
+  const selectRef = useRef(null);
 
   /**
    * Обработчик открытия/закрытия списка.
@@ -33,12 +33,12 @@ const Select = ({ options, disabled, label, onSelectChange, className }) => {
    * @param {Object} option - Выбранная опция.
    */
   const handleOptionClick = (option) => {
-    if (option.label === selectedOption) {
+    if (option.label === currentOption) {
       setIsOpen(false);
       return;
     }
 
-    setSelectedOption(option.label);
+    setCurrentOption(option.label);
     setIsOpen(false);
     if (onSelectChange) {
       onSelectChange(option);
@@ -76,29 +76,30 @@ const Select = ({ options, disabled, label, onSelectChange, className }) => {
    * Эффект для установки начального значения и добавления слушателя событий при загрузке компонента.
    */
   useEffect(() => {
-    setSelectedOption(options[0]?.label || "");
-
     document.addEventListener("click", handleClickOutside);
     document.addEventListener("keydown", handleKeyPress);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
-      document.removeEventListener("click", handleKeyPress);
+      document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [options]);
+  }, []);
+
+  useEffect(() => {
+    setCurrentOption(selectedOption);
+  }, [selectedOption]);
 
   return (
     <div className={`${styles.select} ${className}`} ref={selectRef}>
-      {label && <div className='m-r-10'>{label}</div>}
+      {label && <div className="m-r-10">{label}</div>}
 
       <input
         type="text"
         disabled={disabled}
-        value={selectedOption}
-        onChange={handleInputChange}
+        value={currentOption}
         onClick={handleToggle}
         readOnly
-        className={`${styles.input}  ${
+        className={`${styles.input} ${
           disabled ? styles.disabled : styles.enabled
         }`}
       />
@@ -110,7 +111,7 @@ const Select = ({ options, disabled, label, onSelectChange, className }) => {
               key={index}
               onClick={() => handleOptionClick(option)}
               className={`m-b-4 ${styles.option} ${
-                option.label === selectedOption ? styles.selectedOption : ""
+                option.label === currentOption ? styles.selectedOption : ""
               }`}
             >
               {option.label}
@@ -121,4 +122,5 @@ const Select = ({ options, disabled, label, onSelectChange, className }) => {
     </div>
   );
 };
+
 export default Select;

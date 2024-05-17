@@ -24,6 +24,7 @@
 
 .enabled {
   background-color: #fff;
+  outline: none;
 }
 
 .dropdown {

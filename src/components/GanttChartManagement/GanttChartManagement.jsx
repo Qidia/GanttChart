@@ -12,8 +12,9 @@ const GanttChartManagement = ({
   isLineVisible,
   setIsLineVisible,
 }) => {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isChecked, setIsChecked] = React.useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState(isNamesVisible);
+  const [selectedOption, setSelectedOption] = useState("По подразделениям");
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -33,13 +34,14 @@ const GanttChartManagement = ({
   };
 
   const handleSelectChange = (selectedOption) => {
+    setSelectedOption(selectedOption.label);
     console.log(`Выбрали ${selectedOption.label}`);
   };
 
   const options = [
     { label: "По подразделениям" },
     { label: "По статусу" },
-    { label: "По дисциплине потока"},
+    { label: "По дисциплине потока" },
   ];
 
   return (
@@ -70,20 +72,27 @@ const GanttChartManagement = ({
               <p className="m-r-10">Дата:</p>
               <DateRangeProduction />
             </div>
-            <Select options={options} label="Цвет:" disabled={false} onSelectChange={handleSelectChange} className = "m-b-10"/>
+            <Select
+              options={options}
+              label="Цвет:"
+              disabled={false}
+              selectedOption={selectedOption}
+              onSelectChange={handleSelectChange}
+              className="m-b-10"
+            />
             <Checkbox
               label="Наименования"
               checked={isChecked}
               onChange={handleCheckboxChange}
-              className= "m-b-10"
+              className="m-b-10"
             />
-            <Checkbox label="Легенда" onChange={() => {}} className = "m-b-10" />
+            <Checkbox label="Легенда" onChange={() => {}} className="m-b-10" />
 
             <Checkbox
               label="Горизонтальная линия"
               checked={isLineVisible}
               onChange={handleLineCheckboxChange}
-              className = "m-b-10"
+              className="m-b-10"
             />
           </div>
         </Modal>
