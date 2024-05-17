@@ -1,0 +1,16 @@
+.tooltip {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow-wrap: break-word; /* Перенос длинных слов */
+}/* 
+ */
+.colorBox {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #000;
+}

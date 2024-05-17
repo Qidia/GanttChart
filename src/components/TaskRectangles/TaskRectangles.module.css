@@ -1,0 +1,8 @@
+.containerHorizontalLine {
+  overflow: hidden;
+}
+
+.taskRectangle {
+  position: absolute;
+  cursor: pointer;
+}
