@@ -49,7 +49,7 @@ const GanttChartManagement = ({
       <div className={className}>
         <button onClick={openModal} className={styles.btnOpenModal}>
           <svg
-            viewBox="0 0 32 32"
+            viewBox="0 0 30 30"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
             role="presentation"
@@ -84,15 +84,19 @@ const GanttChartManagement = ({
               label="Наименования"
               checked={isChecked}
               onChange={handleCheckboxChange}
-              className="m-b-10"
+              className={`${styles.checkbox} m-b-10`}
             />
-            <Checkbox label="Легенда" onChange={() => {}} className="m-b-10" />
+            <Checkbox
+              label="Легенда"
+              onChange={() => {}}
+              className={`${styles.checkbox} m-b-10`}
+            />
 
             <Checkbox
               label="Горизонтальная линия"
               checked={isLineVisible}
               onChange={handleLineCheckboxChange}
-              className="m-b-10"
+              className={`${styles.checkbox} m-b-10`}
             />
           </div>
         </Modal>

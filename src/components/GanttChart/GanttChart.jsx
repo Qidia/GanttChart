@@ -24,11 +24,16 @@ const GanttChart = ({ data }) => {
           <div className={styles.departmentsNames}>
             <h3>Список подразделений</h3>
             <div className={styles.departmentName}>
-              {data.map((department) => (
-                <Button key={department.id} className={styles.departmentButton}>
-                  {department.name}
-                </Button>
-              ))}
+              <div className="m-l-15">
+                {data.map((department) => (
+                  <Button
+                    key={department.id}
+                    className={styles.departmentButton}
+                  >
+                    {department.name}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
         )}

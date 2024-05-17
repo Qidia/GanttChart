@@ -1,3 +1,8 @@
+.btnOpenModal {
+  height: 26px;
+  width: 26px;
+}
+
 .btnOpenModal svg {
   display: block;
   fill: none;
@@ -24,4 +29,8 @@
   /*   display: inline-flex;
   align-items: center;
  */
+}
+
+.checkbox {
+  width: 200px;
 }
