@@ -9,6 +9,10 @@ import "react-date-range/dist/theme/default.css"; // Импорт дефолтн
 
 import styles from "./DateRangeProduction.module.css"; // Импорт модуля стилей компонента DateRangeComp
 
+/**
+ * Компонент для выбора диапазона дат.
+ * @returns {JSX.Element} - Элемент JSX компонента.
+ */
 const DateRangeProduction = () => {
   // Состояние для диапазона дат
   const [range, setRange] = useState([

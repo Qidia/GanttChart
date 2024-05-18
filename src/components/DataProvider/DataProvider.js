@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
 
+/**
+ * Компонент, предоставляющий данные из db.json.
+ * @param {Object} props - Свойства компонента.
+ * @param {ReactNode} props.children - Дочерние компоненты, которые используют данные.
+ * @returns {JSX.Element} - Элемент JSX компонента.
+ */
 const DataProvider = ({ children }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Функция для загрузки данных из db.json
+    /**
+     * Функция для загрузки данных из db.json.
+     */
     const fetchData = async () => {
       try {
         const response = await fetch("/api/departments"); // Путь к API маршруту

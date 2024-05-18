@@ -17,9 +17,9 @@ const Select = ({
   className,
   selectedOption,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentOption, setCurrentOption] = useState(selectedOption);
-  const selectRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false); // Состояние для открытия/закрытия списка
+  const [currentOption, setCurrentOption] = useState(selectedOption); // Состояние для текущей выбранной опции
+  const selectRef = useRef(null); // Ссылка на DOM-элемент компонента
 
   /**
    * Обработчик открытия/закрытия списка.
@@ -76,34 +76,36 @@ const Select = ({
    * Эффект для установки начального значения и добавления слушателя событий при загрузке компонента.
    */
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener("click", handleClickOutside); // Добавляем слушатель клика для закрытия списка по клику вне
+    document.addEventListener("keydown", handleKeyPress); // Добавляем слушатель нажатия клавиши для закрытия списка при нажатии Esc
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener("click", handleClickOutside); // Удаляем слушатель клика при размонтировании компонента
+      document.removeEventListener("keydown", handleKeyPress); // Удаляем слушатель нажатия клавиши при размонтировании компонента
     };
-  }, []);
+  }, []); // Запускаем только при монтировании компонента
 
   useEffect(() => {
-    setCurrentOption(selectedOption);
-  }, [selectedOption]);
+    setCurrentOption(selectedOption); // Установка текущей выбранной опции при изменении свойства
+  }, [selectedOption]); // Запускаем только при изменении свойства selectedOption
 
   return (
     <div className={`${styles.select} ${className}`} ref={selectRef}>
       {label && <div className="m-r-10">{label}</div>}
 
+      {/* Ввод, отображающий текущую выбранную опцию */}
       <input
         type="text"
         disabled={disabled}
         value={currentOption}
         onClick={handleToggle}
-        readOnly
+        readOnly // Запрет на редактирование значения
         className={`${styles.input} ${
           disabled ? styles.disabled : styles.enabled
         }`}
       />
 
+      {/* Отображение списка опций при isOpen === true */}
       {isOpen && (
         <div className={styles.dropdown}>
           {options.map((option, index) => (

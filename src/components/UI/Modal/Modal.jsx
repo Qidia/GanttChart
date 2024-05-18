@@ -75,9 +75,6 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
             </button>
           </header>
           <main lassName={styles.modalMain}>{children}</main>
-
-          {/* <footer className={styles.modalFooter}></footer>
-           */}
         </div>
       </div>,
       document.body

@@ -3,7 +3,15 @@ import styles from "./Grid.module.css";
 import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import TaskRectangles from "../TaskRectangles/TaskRectangles";
 
+/**
+ * Компонент сетки, отображающий вертикальные линии, прямоугольники (задачи отделов) и горизонтальную линию.
+ * @param {Object} props - Свойства компонента.
+ * @param {Array} props.data - Данные о задачах.
+ * @param {boolean} props.isLineVisible - Флаг видимости горизонтальной линии.
+ * @returns {JSX.Element} - Элемент JSX компонента.
+ */
 const Grid = ({ data, isLineVisible }) => {
+  // Функция для определения минимальной и максимальной даты задач
   const findMinMaxDates = () => {
     if (!data || data.length === 0) {
       return { minDate: null, maxDate: null };
@@ -12,6 +20,7 @@ const Grid = ({ data, isLineVisible }) => {
     let minDate = new Date(data[0].tasks[0].startDate);
     let maxDate = new Date(data[0].tasks[0].endDate);
 
+    // Перебор данных для нахождения минимальной и максимальной даты
     data.forEach((department) => {
       department.tasks.forEach((task) => {
         const taskStartDate = new Date(task.startDate);
@@ -28,10 +37,13 @@ const Grid = ({ data, isLineVisible }) => {
     return { minDate, maxDate };
   };
 
-  const { minDate, maxDate } = findMinMaxDates();
+  const { minDate, maxDate } = findMinMaxDates(); // Получение минимальной и максимальной дат
+
+  // Состояния для текущей минимальной и максимальной даты
   const [currentMinDate, setCurrentMinDate] = useState(minDate);
   const [currentMaxDate, setCurrentMaxDate] = useState(maxDate);
 
+  // Обработчик прокрутки колеса мыши
   const handleWheelScroll = (e) => {
     e.preventDefault();
     const delta = Math.sign(e.deltaY);
@@ -55,16 +67,18 @@ const Grid = ({ data, isLineVisible }) => {
     setCurrentMaxDate(newMaxDate);
   };
 
+  const maxVerticalLines = 30; // Максимальное количество веркальтиных линий
+
+  // Функция для отрисовки вертикальных линий с датами
   const renderVerticalLines = () => {
     if (!currentMinDate || !currentMaxDate) {
       return null;
     }
 
-    const maxVerticalLines = 15;
     const totalDays = Math.ceil(
       (currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24)
     );
-    const step = totalDays / (maxVerticalLines - 1);
+    const step = totalDays / (maxVerticalLines - 1); // Шаг между датами
 
     const dateArray = [];
     for (let i = 0; i < maxVerticalLines; i++) {
@@ -73,6 +87,7 @@ const Grid = ({ data, isLineVisible }) => {
       dateArray.push(currentDate);
     }
 
+    // Отрисовка вертикальных линий и дат
     return dateArray.reverse().map((date, index) => (
       <div key={index} className={styles.flex}>
         <div className={styles.verticalLine} />
@@ -84,10 +99,12 @@ const Grid = ({ data, isLineVisible }) => {
   return (
     <>
       <div className={styles.grid} onWheelCapture={handleWheelScroll}>
+        {/* Отображение вертикальных линий и дат */}
         <div className={styles.containerVerticalLine}>
           {renderVerticalLines()}
         </div>
 
+        {/* Отображение горизонтальной линии и прямоугольников задач */}
         <div className={styles.containerHorizontalLine}>
           {isLineVisible && <HorizontalLine />}
           <TaskRectangles
@@ -96,6 +113,7 @@ const Grid = ({ data, isLineVisible }) => {
             maxDate={maxDate}
             currentMinDate={currentMinDate}
             currentMaxDate={currentMaxDate}
+            maxVerticalLines={maxVerticalLines}
           />
         </div>
       </div>

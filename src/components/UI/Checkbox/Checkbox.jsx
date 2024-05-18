@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Checkbox.module.css";
 
+/**
+ * Компонент чекбокса.
+ * @param {Object} props - Свойства компонента.
+ * @param {string} props.label - Текст метки чекбокса.
+ * @param {boolean} props.checked - Состояние чекбокса.
+ * @param {Function} props.onChange - Обработчик изменения состояния чекбокса.
+ * @param {string} props.className - Классы стилей чекбокса.
+ * @returns {JSX.Element} - Элемент JSX чекбокса.
+ */
 const Checkbox = ({ label, checked, onChange, className }) => {
   // Состояние для отслеживания состояния чекбокса
   const [isChecked, setIsChecked] = useState(checked || false);
