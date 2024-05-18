@@ -10,7 +10,7 @@ import TaskTooltip from "../TaskTooltip/TaskTooltip";
  * @param {Date} props.maxDate - Максимальная дата.
  * @param {Date} props.currentMinDate - Текущая минимальная дата.
  * @param {Date} props.currentMaxDate - Текущая максимальная дата.
- * @param {Date} props.maxVerticalLines - Максимальное количество отображаемых веркальтиных линий.
+ * @param {number} props.maxVerticalLines - Максимальное количество отображаемых вертикальных линий.
  * @returns {JSX.Element|null} - Элемент JSX компонента или null.
  */
 const TaskRectangles = ({
@@ -116,7 +116,7 @@ const TaskRectangles = ({
 
           return (
             <div
-              key={task.id}
+              key={`${department.id}-${task.id}-${index}`} // Используем комбинацию уникальных значений для ключа
               className={styles.taskRectangle}
               style={{
                 top: `${top}%`,

@@ -32,9 +32,9 @@ const Checkbox = ({ label, checked, onChange, className }) => {
         type="checkbox"
         checked={isChecked}
         onChange={handleChange}
-        className="m-r-10"
+        className={`${styles.input} m-r-10`}
       />
-      {/* Текст метки */}
+      <span className={styles.customCheckbox} />
       <span className={styles.label}>{label}</span>
     </label>
   );

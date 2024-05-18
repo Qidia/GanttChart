@@ -75,7 +75,7 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
               </svg>
             </Button>
           </header>
-          <main lassName={styles.modalMain}>{children}</main>
+          <main className={styles.modalMain}>{children}</main>
         </div>
       </div>,
       document.body

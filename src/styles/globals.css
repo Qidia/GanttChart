@@ -13,6 +13,7 @@
   --br-content-modal: 1px solid #ccc; /* border у всего контента модалки */
   --b-r: 4px; /* border-radius */
   --br-disabled: #f9f9f9; /* disabled select */
+  --color-checkbox: #007bff; /* цвет checkbox */
 }
 
 body {

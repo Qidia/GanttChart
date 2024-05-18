@@ -1,4 +1,40 @@
 .checkbox {
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
+}
+
+.input {
+  display: none;
+}
+
+.customCheckbox {
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.input:checked + .customCheckbox {
+  background-color: var(--color-checkbox);
+  border-color: var(--color-checkbox);
+}
+
+.input:checked + .customCheckbox::after {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin: 0px 0 0 4px;
+}
+
+.label {
+  font-size: 14px;
+  color: #333;
 }
