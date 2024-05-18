@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import TaskTooltip from "../TaskTooltip/TaskTooltip";
 import styles from "./TaskRectangles.module.css";
+import TaskTooltip from "../TaskTooltip/TaskTooltip";
 
 /**
  * Компонент отображения прямоугольников задач.

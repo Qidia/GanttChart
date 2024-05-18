@@ -1,20 +1,28 @@
 .calendarWrap {
   position: relative;
+  border: var(--br-content-modal);
+  border-radius: var(--b-r);
+  cursor: pointer;
+  width: 100%;
+  padding: 8px;
 }
 
 .dateInput {
   background: transparent;
-  min-width: 190px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
 }
 
 .calendar {
   position: absolute;
   width: 100%;
   z-index: 1;
-  padding-top: 4px;
+  padding-top: 9px;
+  left: 0;
 }
 
 .dateRange {
-  border: 1px black solid;
+  border: var(--br-content-modal);
   width: 100%;
 }

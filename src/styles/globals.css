@@ -7,9 +7,17 @@
 }
 
 :root {
-  --btn-open-modal-color: #222222; /* цвет кнопки открытия модалки*/
+  --btn-open-modal-color: #222222; /* цвет кнопки открытия модалки */
+  --bg-general: #f1f1f1; /* цвет отдела с отделами департамента */
+  --bg-charts: #ffffff; /* цвет отдела с диаграммой Ганта + панель управления диаграммой */
+  --br-content-modal: 1px solid #ccc; /* border у всего контента модалки */
+  --b-r: 4px; /* border-radius */
+  --br-disabled: #f9f9f9; /* disabled select */
 }
 
+body {
+  font-family: var(--messina-sans);
+}
 
 .m-r-10 {
   margin-right: 10px;
@@ -21,4 +29,8 @@
 
 .m-b-4 {
   margin-bottom: 4px;
+}
+
+.m-l-15 {
+  margin-left: 15px;
 }

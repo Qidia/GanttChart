@@ -1,13 +1,12 @@
 .tooltip {
   position: absolute;
-  background: white;
+  background: var(--bg-charts);
   border: 1px solid #ccc;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: var(--b-r);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow-wrap: break-word;
   pointer-events: none; /* Важно для предотвращения наведения курсора на всплывающее окно */
-  z-index: 1000;
   visibility: hidden;
 }
 

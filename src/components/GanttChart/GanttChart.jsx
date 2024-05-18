@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import styles from "./GanttChart.module.css";
+import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import Grid from "../Grid/Grid";
 import Button from "../UI/Button/Button";
 

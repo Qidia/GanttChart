@@ -11,10 +11,10 @@
 }
 
 .departmentsNames {
-  background: #f1f1f1;
   width: 15%;
-  padding-top: 30px; /* Оставляем padding у внешнего контейнера */
+  padding-top: 30px;
   text-align: center;
+  background: var(--bg-general);
 }
 
 .departmentName {
@@ -34,20 +34,20 @@
 }
 
 .containerСharts {
-  background: #f1f1f1;
+  background: var(--bg-general);
   width: 100%;
   position: relative;
 }
 
 .charts {
-  background: rgb(255, 255, 255);
   height: 95vh;
-  padding: 5px 10px 80px 10px;
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
   left: 30px;
   right: 15px;
+  padding: 5px 10px 80px 10px;
   border-radius: 7px;
+  background: #ffffff;
   box-shadow: 0px 2px 10px 2px rgb(128 128 128 / 20%);
 }

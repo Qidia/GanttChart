@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import styles from "./GanttChartManagement.module.css";
 import { Modal } from "../UI/Modal/Modal";
 import Select from "../UI/Select/Select";
 import DateRangeProduction from "../DateRangeProduction/DateRangeProduction";
 import Checkbox from "../UI/Checkbox/Checkbox";
-import styles from "./GanttChartManagement.module.css";
 import Button from "../UI/Button/Button";
 
 /**

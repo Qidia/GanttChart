@@ -3,36 +3,29 @@
 }
 
 .input {
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: var(--br-content-modal);
+  border-radius: var(--b-r);
   cursor: pointer;
   width: 100%;
   padding: 8px;
-
-/*   padding: 3px;
-  background-color: #f0f0f0;
-  outline: none;
-  width: 195px;
-  text-align: center;
- */}
-
+}
 
 .disabled {
-  background-color: #f9f9f9;
+  background-color: var(--br-disabled);
   cursor: not-allowed;
 }
 
 .enabled {
-  background-color: #fff;
+  background-color: var(--bg-charts);
   outline: none;
 }
 
 .dropdown {
   position: absolute;
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
+  border: var(--br-content-modal);
+  border-radius: var(--b-r);
+  background-color: var(--bg-charts);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   padding: 5px;
@@ -43,7 +36,7 @@
 .option {
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: var(--b-r);
 }
 
 .option:hover {
@@ -54,4 +47,3 @@
   background-color: #e6e6e6;
   pointer-events: none; /* чтобы нельзя было кликнуть на выбранную опцию */
 }
-

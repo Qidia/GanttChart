@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import styles from "./DateRangeProduction.module.css"; // Импорт модуля стилей компонента DateRangeComp
+
 import { DateRange } from "react-date-range"; // Импорт компонента DateRange из библиотеки react-date-range
 
 import format from "date-fns/format"; // Импорт функции форматирования даты из библиотеки date-fns
@@ -6,8 +8,6 @@ import { addDays } from "date-fns"; // Импорт функции добавл�
 
 import "react-date-range/dist/styles.css"; // Импорт стилей компонента DateRange
 import "react-date-range/dist/theme/default.css"; // Импорт дефолтной темы компонента DateRange
-
-import styles from "./DateRangeProduction.module.css"; // Импорт модуля стилей компонента DateRangeComp
 
 /**
  * Компонент для выбора диапазона дат.
