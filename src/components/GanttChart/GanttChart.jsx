@@ -14,6 +14,12 @@ const GanttChart = ({ data }) => {
   const [isNamesVisible, setIsNamesVisible] = useState(false);
   const [isLineVisible, setIsLineVisible] = useState(false);
 
+  // Добавляем уникальные идентификаторы для элементов данных
+  const uniqueData = data.map((department, index) => ({
+    ...department,
+    uniqueId: `${department.id || 'department'}-${index}`
+  }));
+
   return (
     <>
       {/* Компонент управления параметрами графика */}
@@ -21,7 +27,7 @@ const GanttChart = ({ data }) => {
         className={styles.management}
         isNamesVisible={isNamesVisible} // Передаем состояние видимости имен в GanttChartManagement
         setIsNamesVisible={setIsNamesVisible} // Передаем функцию для обновления состояния видимости имен
-        isLineVisible={isLineVisible} // Передаем состояние видимости линии в GanttChaentrtManagem
+        isLineVisible={isLineVisible} // Передаем состояние видимости линии в GanttChartManagement
         setIsLineVisible={setIsLineVisible} // Передаем функцию для обновления состояния видимости линии
       />
 
@@ -32,9 +38,10 @@ const GanttChart = ({ data }) => {
             <div className={styles.departmentName}>
               <div className="m-l-15">
                 {/* Отображение кнопок для выбора отдела */}
-                {data.map((department) => (
+                {uniqueData.map((department) => (
                   <Button
-                    key={department.id}
+                    key={department.uniqueId} // Используем ключ для идентификации элемента в списке
+                    id={department.uniqueId} // Используем id для передачи уникального идентификатора в компонент Button
                     className={styles.departmentButton}
                   >
                     {department.name}
@@ -48,7 +55,7 @@ const GanttChart = ({ data }) => {
         <div className={styles.containerСharts}>
           <div className={styles.charts}>
             {/* Компонент отображения сетки графика и задач */}
-            <Grid data={data} isLineVisible={isLineVisible}></Grid>
+            <Grid data={uniqueData} isLineVisible={isLineVisible} />
           </div>
         </div>
       </div>
