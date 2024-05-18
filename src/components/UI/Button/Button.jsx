@@ -13,7 +13,13 @@ import React from "react";
  */
 const Button = ({ prefix, type, children, className, id, onClick }) => {
   return (
-    <button className={className} type={type} id={id} onClick={onClick}>
+    <button
+      className={className}
+      type={type}
+      id={id}
+      onClick={onClick}
+      title={children} // добавляем title для отображения полного текста при наведении
+    >
       {prefix && <div>{prefix}</div>}
       {children}
     </button>

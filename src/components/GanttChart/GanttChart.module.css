@@ -40,6 +40,25 @@
   text-align: start;
   border-bottom: 1px solid #007bff;
   margin-bottom: 5px;
+
+  white-space: nowrap; /* Текст в одну строку */
+  overflow: hidden; /* Обрезаем переполненный текст */
+  text-overflow: ellipsis; /* Добавляем троеточие для переполненного текста */
+  position: relative;
+}
+
+.departmentButton:hover::after {
+  content: attr(title); /* Отображаем полный текст из атрибута title */
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+  z-index: 10;
+  white-space: normal; /* Позволяет тексту переноситься на следующую строку в подсказке */
+  max-width: 200px; /* Максимальная ширина подсказки */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  top: 100%; /* Позиция подсказки под кнопкой */
+  left: 0;
 }
 
 .containerСharts {
