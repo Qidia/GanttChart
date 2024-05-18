@@ -1,6 +1,6 @@
 // HorizontalLine.js
-import React, { useState } from 'react';
-import styles from './HorizontalLine.module.css';
+import React, { useState } from "react";
+import styles from "./HorizontalLine.module.css";
 
 const HorizontalLine = () => {
   const [isMouseInside, setIsMouseInside] = useState(false);
@@ -10,7 +10,12 @@ const HorizontalLine = () => {
     const { clientX, clientY } = e;
     const rect = e.currentTarget.getBoundingClientRect();
 
-    if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
+    if (
+      clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom
+    ) {
       setMousePosition({ x: clientX - rect.left, y: clientY - rect.top });
       setIsMouseInside(true);
     } else {
@@ -20,11 +25,11 @@ const HorizontalLine = () => {
 
   return (
     <div className={styles.container} onMouseMove={handleMouseMove}>
-      {isMouseInside && <div className={styles.line} style={{ top: mousePosition.y }} />}
+      {isMouseInside && (
+        <div className={styles.line} style={{ top: mousePosition.y }} />
+      )}
     </div>
   );
 };
 
 export default HorizontalLine;
-
-

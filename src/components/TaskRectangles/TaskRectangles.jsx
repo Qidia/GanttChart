@@ -19,12 +19,7 @@ const TaskRectangles = ({
     const mouseX = e.clientX;
     const mouseY = e.clientY;
 
-    const tooltipPosition = {
-      top: mouseY,
-      left: mouseX,
-    };
-
-    setTooltip({ task, department, position: tooltipPosition });
+    setTooltip({ task, department, position: { top: mouseY, left: mouseX } });
   };
 
   const handleMouseLeave = () => {
