@@ -4,6 +4,7 @@ import Select from "../UI/Select/Select";
 import DateRangeProduction from "../DateRangeProduction/DateRangeProduction";
 import Checkbox from "../UI/Checkbox/Checkbox";
 import styles from "./GanttChartManagement.module.css";
+import Button from "../UI/Button/Button";
 
 /**
  * Компонент управления параметрами диаграммы Ганта.
@@ -77,7 +78,7 @@ const GanttChartManagement = ({
     <>
       <div className={className}>
         {/* Кнопка для открытия модального окна */}
-        <button onClick={openModal} className={styles.btnOpenModal}>
+        <Button onClick={openModal} className={styles.btnOpenModal}>
           <svg
             viewBox="0 0 30 30"
             xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +92,7 @@ const GanttChartManagement = ({
               <path d="m2 8h28"></path>
             </g>
           </svg>
-        </button>
+        </Button>
         {/* Модальное окно для управления параметрами графика */}
         <Modal
           isOpen={isModalOpen}

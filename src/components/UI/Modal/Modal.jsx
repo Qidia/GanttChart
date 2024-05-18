@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import styles from "./Modal.module.css";
+import Button from "../Button/Button";
 
 /**
  * Модальное окно.
@@ -60,11 +61,11 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
         <div ref={modalRef} className={styles.modalContent}>
           <header className={styles.modalHeader}>
             <h2 className={styles.modalHeaderTitle}>{titleModal}</h2>
-            <button onClick={handleClose}>
+            <Button onClick={handleClose} className={styles.closeButton}>
               <svg
                 stroke="currentColor"
                 fill="currentColor"
-                stroke-width="0"
+                strokeWidth="0"
                 viewBox="0 0 32 32"
                 height="1em"
                 width="1em"
@@ -72,7 +73,7 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
               >
                 <path d="M 7.21875 5.78125 L 5.78125 7.21875 L 14.5625 16 L 5.78125 24.78125 L 7.21875 26.21875 L 16 17.4375 L 24.78125 26.21875 L 26.21875 24.78125 L 17.4375 16 L 26.21875 7.21875 L 24.78125 5.78125 L 16 14.5625 Z"></path>
               </svg>
-            </button>
+            </Button>
           </header>
           <main lassName={styles.modalMain}>{children}</main>
         </div>
