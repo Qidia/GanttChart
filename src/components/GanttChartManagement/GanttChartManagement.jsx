@@ -98,6 +98,7 @@ const GanttChartManagement = ({
           isOpen={isModalOpen}
           titleModal="Панель управления"
           onClose={closeModal}
+          className={styles.titleModal}
         >
           <div className={styles.modalContent}>
             {/* Компонент выбора диапазона дат */}

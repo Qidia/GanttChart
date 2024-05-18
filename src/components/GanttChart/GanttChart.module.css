@@ -11,7 +11,7 @@
 }
 
 .departmentsNames {
-  width: 15%;
+  width: 20%;
   padding-top: 30px;
   text-align: center;
   background: var(--bg-general);
@@ -19,7 +19,7 @@
 
 .departmentName {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 5px;
   overflow-y: auto; /* Добавляем прокрутку по вертикали */
   max-height: calc(100vh - 65px);
   direction: rtl; /* Меняем направление на rtl для перемещения полосы прокрутки влево */
@@ -29,8 +29,17 @@
   direction: ltr; /* Восстанавливаем направление текста для внутренних элементов */
 }
 
+.departmentsNames h3 {
+  font-size: 19px;
+  font-weight: 600;
+}
+
 .departmentButton {
   display: block;
+  width: 100%;
+  text-align: start;
+  border-bottom: 1px solid #007bff;
+  margin-bottom: 5px;
 }
 
 .containerСharts {
@@ -44,10 +53,17 @@
   position: absolute;
   top: 50%;
   transform: translate(0, -50%);
-  left: 30px;
   right: 15px;
-  padding: 5px 10px 80px 10px;
+  padding: 5px 10px 90px 10px;
   border-radius: 7px;
   background: #ffffff;
   box-shadow: 0px 2px 10px 2px rgb(128 128 128 / 20%);
+  font-size: 17px;
+}
+
+.closeDepartmentName {
+  left: 30px;
+}
+.openDepartmentName {
+  left: 0;
 }

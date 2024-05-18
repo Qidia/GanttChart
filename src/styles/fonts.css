@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Messina Sans";
+  src: url("/fonts/MessinaSans-SemiBold.eot") format("embedded-opentype"),
+    url("/fonts/MessinaSans-SemiBold.woff2") format("woff2"),
+    url("/fonts/MessinaSans-SemiBold.woff") format("woff"),
+    url("/fonts/MessinaSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Messina Sans";
+  src: url("/fonts/MessinaSans-Regular.eot?#iefix") format("embedded-opentype"),
+    url("/fonts/MessinaSans-Regular.woff2") format("woff2"),
+    url("/fonts/MessinaSans-Regular.woff") format("woff"),
+    url("/fonts/MessinaSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

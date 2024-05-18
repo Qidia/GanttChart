@@ -9,7 +9,6 @@
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   width: 20rem;
-
   background: var(--bg-charts);
 }
 
@@ -21,6 +20,11 @@
 }
 
 .modalHeaderTitle {
-  font-size: 1.5rem;
+  font-size: 22px;
   font-weight: bold;
+}
+
+.closeButton {
+  width: 16px;
+  height: 16px;
 }

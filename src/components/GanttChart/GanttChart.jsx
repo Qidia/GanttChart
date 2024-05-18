@@ -17,7 +17,7 @@ const GanttChart = ({ data }) => {
   // Добавляем уникальные идентификаторы для элементов данных
   const uniqueData = data.map((department, index) => ({
     ...department,
-    uniqueId: `${department.id || 'department'}-${index}`
+    uniqueId: `${department.id || "department"}-${index}`,
   }));
 
   return (
@@ -36,7 +36,7 @@ const GanttChart = ({ data }) => {
           <div className={styles.departmentsNames}>
             <h3>Список подразделений</h3>
             <div className={styles.departmentName}>
-              <div className="m-l-15">
+              <div className="m-l-15 m-r-15">
                 {/* Отображение кнопок для выбора отдела */}
                 {uniqueData.map((department) => (
                   <Button
@@ -53,7 +53,13 @@ const GanttChart = ({ data }) => {
         )}
 
         <div className={styles.containerСharts}>
-          <div className={styles.charts}>
+          <div
+            className={` ${styles.charts} ${
+              isNamesVisible
+                ? `${styles.openDepartmentName}`
+                : `${styles.closeDepartmentName}`
+            }`}
+          >
             {/* Компонент отображения сетки графика и задач */}
             <Grid data={uniqueData} isLineVisible={isLineVisible} />
           </div>

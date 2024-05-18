@@ -66,7 +66,7 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
                 stroke="currentColor"
                 fill="currentColor"
                 strokeWidth="0"
-                viewBox="0 0 32 32"
+                viewBox="1 0 30 30"
                 height="1em"
                 width="1em"
                 xmlns="http://www.w3.org/2000/svg"

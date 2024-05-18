@@ -14,10 +14,15 @@
   --b-r: 4px; /* border-radius */
   --br-disabled: #f9f9f9; /* disabled select */
   --color-checkbox: #007bff; /* цвет checkbox */
+  --color-text: #222222; /* цвет текста */
+  --size-text: 16px; /* размер текста */
+  --font-family-text: "MessinaSans", sans-serif; /* шрифт текста*/
 }
 
 body {
-  font-family: var(--messina-sans);
+  font-family: var(--font-family-text);
+  font-size: 16px;
+  color: var(--color-text);
 }
 
 .m-r-10 {
@@ -34,4 +39,8 @@ body {
 
 .m-l-15 {
   margin-left: 15px;
+}
+
+.m-r-15 {
+  margin-right: 15px;
 }
