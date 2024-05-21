@@ -112,12 +112,15 @@ const Grid = ({ data, isLineVisible }) => {
         for (let i = hoveredIndex - 1; i >= 0; i--) {
           if (i === 0) {
             // Изменение крайней левой даты
-            newDateArray[i] = new Date(
-              newDateArray[i + 1].getTime() - dateInterval
-            );
+            newDateArray[i] = new Date(newDateArray[i + 1].getTime() - dateInterval);
           } else {
             newDateArray[i] = new Date(dateArray[i - 1]);
           }
+        }
+
+        // Изменение даты для следующей линии справа от правой линии прокрутки
+        if (hoveredIndex + 2 < newDateArray.length) {
+          newDateArray[hoveredIndex + 2] = new Date(newDateArray[hoveredIndex + 3]);
         }
       }
     } else {
