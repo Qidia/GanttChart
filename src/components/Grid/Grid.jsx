@@ -50,7 +50,7 @@ const Grid = ({ data, isLineVisible }) => {
     return dates;
   };
 
-  const maxVerticalLines = 30; // Максимальное количество веркальтиных линий
+  const maxVerticalLines = 30; // Максимальное количество вертикальных линий
   const [dateArray, setDateArray] = useState(() =>
     generateDateArray(minDate, maxDate, maxVerticalLines)
   );
@@ -99,17 +99,34 @@ const Grid = ({ data, isLineVisible }) => {
       }
     } else {
       // Прокрутка вверх
-      if (
-        hoveredIndex === dateArray.length - 2 ||
-        newDateArray[hoveredIndex].getTime() <
-          newDateArray[hoveredIndex + 1].getTime()
-      ) {
-        newDateArray[hoveredIndex].setDate(
-          newDateArray[hoveredIndex].getDate() + 1
-        );
-        newDateArray[hoveredIndex + 1].setDate(
-          newDateArray[hoveredIndex + 1].getDate() - 1
-        );
+      const current = new Date(newDateArray[hoveredIndex]);
+      const next = new Date(newDateArray[hoveredIndex + 1]);
+
+      // Установим время на 00:00:00 для корректного сравнения дат
+      current.setHours(0, 0, 0, 0);
+      next.setHours(0, 0, 0, 0);
+
+      const diffTime = next - current;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      console.log(`current: ${current}, next: ${next}, diffDays: ${diffDays}`);
+
+      if (diffDays === 1) {
+        console.log("1");
+        // Если даты идут последовательно, не изменяем даты
+        return;
+      } else if (diffDays === 2) {
+        console.log("gggg");
+        // Если между датами одна дата, изменяем только левую дату
+        current.setDate(current.getDate() + 1);
+        newDateArray[hoveredIndex] = current;
+      } else if (diffDays > 2) {
+        console.log("2");
+        // В других случаях изменяем обе даты
+        current.setDate(current.getDate() + 1);
+        next.setDate(next.getDate() - 1);
+        newDateArray[hoveredIndex] = current;
+        newDateArray[hoveredIndex + 1] = next;
       }
     }
 
