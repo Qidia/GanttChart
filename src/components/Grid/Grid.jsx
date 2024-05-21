@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styles from "./Grid.module.css";
 import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import TaskRectangles from "../TaskRectangles/TaskRectangles";
@@ -12,7 +12,7 @@ import TaskRectangles from "../TaskRectangles/TaskRectangles";
  */
 const Grid = ({ data, isLineVisible }) => {
   // Функция для определения минимальной и максимальной даты задач
-  const findMinMaxDates = () => {
+  const findMinMaxDates = useCallback(() => {
     if (!data || data.length === 0) {
       return { minDate: null, maxDate: null };
     }
@@ -35,60 +35,90 @@ const Grid = ({ data, isLineVisible }) => {
     });
 
     return { minDate, maxDate };
-  };
+  }, [data]);
 
   const { minDate, maxDate } = findMinMaxDates(); // Получение минимальной и максимальной дат
 
-  // Состояния для текущей минимальной и максимальной даты
-  const [currentMinDate, setCurrentMinDate] = useState(minDate);
-  const [currentMaxDate, setCurrentMaxDate] = useState(maxDate);
+  // Функция для генерации массива дат между начальной и конечной датой с определенным шагом
+  const generateDateArray = (startDate, endDate, steps) => {
+    const dates = [];
+    const stepTime = (endDate - startDate) / (steps - 1);
+
+    for (let i = 0; i < steps; i++) {
+      dates.push(new Date(startDate.getTime() + stepTime * i));
+    }
+    return dates;
+  };
+
+  const maxVerticalLines = 30; // Максимальное количество веркальтиных линий
+  const [dateArray, setDateArray] = useState(() =>
+    generateDateArray(minDate, maxDate, maxVerticalLines)
+  );
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  // Обработчик перемещения мыши
+  const handleMouseMove = (e) => {
+    const gridRect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - gridRect.left;
+    const lineWidth = gridRect.width / (dateArray.length - 1);
+
+    let index = Math.floor(mouseX / lineWidth);
+    if (index >= dateArray.length - 1) {
+      index = dateArray.length - 2;
+    }
+    setHoveredIndex(index);
+  };
 
   // Обработчик прокрутки колеса мыши
   const handleWheelScroll = (e) => {
     e.preventDefault();
+    if (
+      hoveredIndex === null ||
+      hoveredIndex < 0 ||
+      hoveredIndex >= dateArray.length - 1
+    )
+      return;
+
     const delta = Math.sign(e.deltaY);
 
-    const newMinDate = new Date(currentMinDate);
-    const newMaxDate = new Date(currentMaxDate);
-
-    const daysDifference = Math.ceil(
-      (newMaxDate - newMinDate) / (1000 * 60 * 60 * 24)
-    );
+    const newDateArray = [...dateArray];
 
     if (delta > 0) {
-      newMinDate.setDate(newMinDate.getDate() + 1);
-      newMaxDate.setDate(newMaxDate.getDate() - 1);
-    } else if (daysDifference > 1) {
-      newMinDate.setDate(newMinDate.getDate() - 1);
-      newMaxDate.setDate(newMaxDate.getDate() + 1);
+      // Прокрутка вниз
+      if (
+        hoveredIndex === 0 ||
+        newDateArray[hoveredIndex].getTime() >
+          newDateArray[hoveredIndex - 1].getTime()
+      ) {
+        newDateArray[hoveredIndex].setDate(
+          newDateArray[hoveredIndex].getDate() - 1
+        );
+        newDateArray[hoveredIndex + 1].setDate(
+          newDateArray[hoveredIndex + 1].getDate() + 1
+        );
+      }
+    } else {
+      // Прокрутка вверх
+      if (
+        hoveredIndex === dateArray.length - 2 ||
+        newDateArray[hoveredIndex].getTime() <
+          newDateArray[hoveredIndex + 1].getTime()
+      ) {
+        newDateArray[hoveredIndex].setDate(
+          newDateArray[hoveredIndex].getDate() + 1
+        );
+        newDateArray[hoveredIndex + 1].setDate(
+          newDateArray[hoveredIndex + 1].getDate() - 1
+        );
+      }
     }
 
-    setCurrentMinDate(newMinDate);
-    setCurrentMaxDate(newMaxDate);
+    setDateArray(newDateArray);
   };
-
-  const maxVerticalLines = 30; // Максимальное количество веркальтиных линий
 
   // Функция для отрисовки вертикальных линий с датами
   const renderVerticalLines = () => {
-    if (!currentMinDate || !currentMaxDate) {
-      return null;
-    }
-
-    const totalDays = Math.ceil(
-      (currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24)
-    );
-    const step = totalDays / (maxVerticalLines - 1); // Шаг между датами
-
-    const dateArray = [];
-    for (let i = 0; i < maxVerticalLines; i++) {
-      const currentDate = new Date(currentMaxDate);
-      currentDate.setDate(currentMaxDate.getDate() - Math.round(step * i));
-      dateArray.push(currentDate);
-    }
-
-    // Отрисовка вертикальных линий и дат
-    return dateArray.reverse().map((date, index) => (
+    return dateArray.map((date, index) => (
       <div key={index} className={styles.flex}>
         <div className={styles.verticalLine} />
         <div className={styles.date}>{date.toLocaleDateString()}</div>
@@ -98,7 +128,11 @@ const Grid = ({ data, isLineVisible }) => {
 
   return (
     <>
-      <div className={styles.grid} onWheelCapture={handleWheelScroll}>
+      <div
+        className={styles.grid}
+        onWheel={handleWheelScroll}
+        onMouseMove={handleMouseMove}
+      >
         {/* Отображение вертикальных линий и дат */}
         <div className={styles.containerVerticalLine}>
           {renderVerticalLines()}
@@ -111,8 +145,8 @@ const Grid = ({ data, isLineVisible }) => {
             data={data}
             minDate={minDate}
             maxDate={maxDate}
-            currentMinDate={currentMinDate}
-            currentMaxDate={currentMaxDate}
+            currentMinDate={dateArray[0]}
+            currentMaxDate={dateArray[dateArray.length - 1]}
             maxVerticalLines={maxVerticalLines}
           />
         </div>
