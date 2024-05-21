@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styles from "./Grid.module.css";
 import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import TaskRectangles from "../TaskRectangles/TaskRectangles";
@@ -55,6 +55,15 @@ const Grid = ({ data, isLineVisible }) => {
     generateDateArray(minDate, maxDate, maxVerticalLines)
   );
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [dateInterval, setDateInterval] = useState(null);
+
+  // Вычисление интервала между датами при первой загрузке
+  useEffect(() => {
+    if (dateArray.length > 1) {
+      const initialInterval = dateArray[1].getTime() - dateArray[0].getTime();
+      setDateInterval(initialInterval);
+    }
+  }, [dateArray]);
 
   // Обработчик перемещения мыши
   const handleMouseMove = (e) => {
@@ -90,12 +99,26 @@ const Grid = ({ data, isLineVisible }) => {
         newDateArray[hoveredIndex].getTime() >
           newDateArray[hoveredIndex - 1].getTime()
       ) {
+        // Уменьшаем левую дату
         newDateArray[hoveredIndex].setDate(
           newDateArray[hoveredIndex].getDate() - 1
         );
+        // Увеличиваем правую дату
         newDateArray[hoveredIndex + 1].setDate(
           newDateArray[hoveredIndex + 1].getDate() + 1
         );
+
+        // Изменение дат для всех линий слева от левой линии прокрутки
+        for (let i = hoveredIndex - 1; i >= 0; i--) {
+          if (i === 0) {
+            // Изменение крайней левой даты
+            newDateArray[i] = new Date(
+              newDateArray[i + 1].getTime() - dateInterval
+            );
+          } else {
+            newDateArray[i] = new Date(dateArray[i - 1]);
+          }
+        }
       }
     } else {
       // Прокрутка вверх
@@ -108,6 +131,8 @@ const Grid = ({ data, isLineVisible }) => {
 
       const diffTime = next - current;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      let rightLineChanged = false;
 
       if (diffDays === 1) {
         // Если даты идут последовательно, не изменяем даты
@@ -122,17 +147,20 @@ const Grid = ({ data, isLineVisible }) => {
         next.setDate(next.getDate() - 1);
         newDateArray[hoveredIndex] = current;
         newDateArray[hoveredIndex + 1] = next;
+        rightLineChanged = true;
       }
-    }
 
-    // Изменение дат для всех линий слева от левой линии прокрутки
-    for (let i = hoveredIndex - 1; i >= 0; i--) {
-      newDateArray[i] = new Date(dateArray[i + 1]);
-    }
+      // Изменение дат для всех линий слева от левой линии прокрутки
+      for (let i = hoveredIndex - 1; i >= 0; i--) {
+        newDateArray[i] = new Date(dateArray[i + 1]);
+      }
 
-    // Изменение дат для всех линий справа от правой линии прокрутки
-    for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
-      newDateArray[i] = new Date(dateArray[i - 1]);
+      // Изменение дат для всех линий справа от правой линии прокрутки, если правая линия изменилась
+      if (rightLineChanged) {
+        for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
+          newDateArray[i] = new Date(dateArray[i - 1]);
+        }
+      }
     }
 
     setDateArray(newDateArray);
