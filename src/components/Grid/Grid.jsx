@@ -78,11 +78,11 @@ const Grid = ({ data, isLineVisible }) => {
       hoveredIndex >= dateArray.length - 1
     )
       return;
-  
+
     const delta = Math.sign(e.deltaY);
-  
+
     const newDateArray = [...dateArray];
-  
+
     if (delta > 0) {
       // Прокрутка вниз
       if (
@@ -101,14 +101,14 @@ const Grid = ({ data, isLineVisible }) => {
       // Прокрутка вверх
       const current = new Date(newDateArray[hoveredIndex]);
       const next = new Date(newDateArray[hoveredIndex + 1]);
-  
+
       // Установим время на 00:00:00 для корректного сравнения дат
       current.setHours(0, 0, 0, 0);
       next.setHours(0, 0, 0, 0);
-  
+
       const diffTime = next - current;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
       if (diffDays === 1) {
         // Если даты идут последовательно, не изменяем даты
         return;
@@ -124,15 +124,20 @@ const Grid = ({ data, isLineVisible }) => {
         newDateArray[hoveredIndex + 1] = next;
       }
     }
-  
+
     // Изменение дат для всех линий слева от левой линии прокрутки
     for (let i = hoveredIndex - 1; i >= 0; i--) {
       newDateArray[i] = new Date(dateArray[i + 1]);
     }
-  
+
+    // Изменение дат для всех линий справа от правой линии прокрутки
+    for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
+      newDateArray[i] = new Date(dateArray[i - 1]);
+    }
+
     setDateArray(newDateArray);
   };
-          
+
   // Функция для отрисовки вертикальных линий с датами
   const renderVerticalLines = () => {
     return dateArray.map((date, index) => (
