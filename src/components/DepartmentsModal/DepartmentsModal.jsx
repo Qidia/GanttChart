@@ -18,11 +18,9 @@ const DepartmentsModal = ({ isOpen, onClose, department }) => {
       titleModal={department.name}
       onClose={onClose}
       type="DepartmentsModal"
-      
     >
       <div className={styles.modalContent}>
-        {/* Передаем данные о выбранном отделе в компонент Grid */}
-        <Grid data={[department]} isLineVisible={false} />
+        <Grid data={[department]} isLineVisible={false} showArrows={true} showSubtasks={true} />
       </div>
     </Modal>
   );

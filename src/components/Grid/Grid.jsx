@@ -8,9 +8,11 @@ import TaskRectangles from "../TaskRectangles/TaskRectangles";
  * @param {Object} props - Свойства компонента.
  * @param {Array} props.data - Данные о задачах.
  * @param {boolean} props.isLineVisible - Флаг видимости горизонтальной линии.
+ * @param {boolean} props.showArrows - Флаг отображения стрелок между задачами и подзадачами.
+ * @param {boolean} props.showSubtasks - Флаг отображения подзадач.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
-const Grid = ({ data, isLineVisible }) => {
+const Grid = ({ data, isLineVisible, showArrows, showSubtasks }) => {
   // Функция для определения минимальной и максимальной даты задач
   const findMinMaxDates = () => {
     if (!data || data.length === 0) {
@@ -84,6 +86,8 @@ const Grid = ({ data, isLineVisible }) => {
             minDate={minDate}
             maxDate={maxDate}
             maxVerticalLines={maxVerticalLines}
+            showArrows={showArrows}
+            showSubtasks={showSubtasks}
           />
         </div>
       </div>
