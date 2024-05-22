@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React from "react";
 import styles from "./Grid.module.css";
 import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import TaskRectangles from "../TaskRectangles/TaskRectangles";
@@ -12,7 +12,7 @@ import TaskRectangles from "../TaskRectangles/TaskRectangles";
  */
 const Grid = ({ data, isLineVisible }) => {
   // Функция для определения минимальной и максимальной даты задач
-  const findMinMaxDates = useCallback(() => {
+  const findMinMaxDates = () => {
     if (!data || data.length === 0) {
       return { minDate: null, maxDate: null };
     }
@@ -35,160 +35,32 @@ const Grid = ({ data, isLineVisible }) => {
     });
 
     return { minDate, maxDate };
-  }, [data]);
+  };
 
   const { minDate, maxDate } = findMinMaxDates(); // Получение минимальной и максимальной дат
 
-  // Функция для генерации массива дат между начальной и конечной датой с определенным шагом
-  const generateDateArray = (startDate, endDate, steps) => {
-    const dates = [];
-    const stepTime = (endDate - startDate) / (steps - 1);
-
-    for (let i = 0; i < steps; i++) {
-      dates.push(new Date(startDate.getTime() + stepTime * i));
-    }
-    return dates;
-  };
-
   const maxVerticalLines = 30; // Максимальное количество вертикальных линий
-  const [dateArray, setDateArray] = useState(() =>
-    generateDateArray(minDate, maxDate, maxVerticalLines)
-  );
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [initialDateInterval, setInitialDateInterval] = useState(null);
-
-  // Вычисление интервала между датами при первой загрузке
-  useEffect(() => {
-    if (dateArray.length > 1) {
-      const interval = dateArray[1].getTime() - dateArray[0].getTime();
-      setInitialDateInterval(interval);
-    }
-  }, [dateArray]);
-
-  // Обработчик перемещения мыши
-  const handleMouseMove = (e) => {
-    const gridRect = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX - gridRect.left;
-    const lineWidth = gridRect.width / (dateArray.length - 1);
-
-    let index = Math.floor(mouseX / lineWidth);
-    if (index >= dateArray.length - 1) {
-      index = dateArray.length - 2;
-    }
-    setHoveredIndex(index);
-  };
-
-  // Обработчик прокрутки колеса мыши
-  const handleWheelScroll = (e) => {
-    e.preventDefault();
-    if (
-      hoveredIndex === null ||
-      hoveredIndex < 0 ||
-      hoveredIndex >= dateArray.length - 1
-    )
-      return;
-
-    const delta = Math.sign(e.deltaY);
-
-    const newDateArray = [...dateArray];
-    const current = new Date(newDateArray[hoveredIndex]);
-    const next = new Date(newDateArray[hoveredIndex + 1]);
-
-    // Установим время на 00:00:00 для корректного сравнения дат
-    current.setHours(0, 0, 0, 0);
-    next.setHours(0, 0, 0, 0);
-
-    const intervalBetweenDates = next - current;
-
-    console.log(`initialDateInterval = ${initialDateInterval}`);
-    console.log(`intervalBetweenDates = ${intervalBetweenDates}`);
-
-    if (delta > 0 && intervalBetweenDates < initialDateInterval) {
-      console.log("2");
-
-      if (
-        hoveredIndex === 0 ||
-        newDateArray[hoveredIndex].getTime() >
-          newDateArray[hoveredIndex - 1].getTime()
-      ) {
-        console.log("3");
-        // Уменьшаем левую дату
-        newDateArray[hoveredIndex].setDate(
-          newDateArray[hoveredIndex].getDate() - 1
-        );
-        // Увеличиваем правую дату
-        newDateArray[hoveredIndex + 1].setDate(
-          newDateArray[hoveredIndex + 1].getDate() + 1
-        );
-
-        // Изменение дат для всех линий слева от левой линии прокрутки
-        for (let i = hoveredIndex - 1; i >= 0; i--) {
-          if (i === 0) {
-            // Изменение крайней левой даты
-            console.log("4");
-            newDateArray[i] = new Date(
-              newDateArray[i + 1].getTime() - initialDateInterval
-            );
-          } else {
-            console.log("5");
-            newDateArray[i] = new Date(newDateArray[i - 1]);
-          }
-        }
-
-        // Изменение дат для всех линий справа от правой линии прокрутки
-        if (hoveredIndex + 2 < newDateArray.length) {
-          console.log("6");
-          for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
-            newDateArray[i] = new Date(newDateArray[i - 1].getTime() + initialDateInterval);
-          }
-
-          // Изменение крайней правой даты
-          newDateArray[newDateArray.length - 1] = new Date(
-            newDateArray[newDateArray.length - 2].getTime() + initialDateInterval
-          );
-        }
-      }
-    } else if (delta < 0) {
-      const diffTime = next - current;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      let rightLineChanged = false;
-
-      if (diffDays === 1) {
-        // Если даты идут последовательно, не изменяем даты
-        return;
-      } else if (diffDays === 2) {
-        // Если между датами одна дата, изменяем только левую дату
-        current.setDate(current.getDate() + 1);
-        newDateArray[hoveredIndex] = current;
-      } else if (diffDays > 2) {
-        // В других случаях изменяем обе даты
-        current.setDate(current.getDate() + 1);
-        next.setDate(next.getDate() - 1);
-        newDateArray[hoveredIndex] = current;
-        newDateArray[hoveredIndex + 1] = next;
-        rightLineChanged = true;
-      }
-
-      // Изменение дат для всех линий слева от левой линии прокрутки
-      for (let i = hoveredIndex - 1; i >= 0; i--) {
-        newDateArray[i] = new Date(dateArray[i + 1]);
-      }
-
-      // Изменение дат для всех линий справа от правой линии прокрутки, если правая линия изменилась
-      if (rightLineChanged) {
-        for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
-          newDateArray[i] = new Date(dateArray[i - 1]);
-        }
-      }
-    }
-
-    setDateArray(newDateArray);
-  };
 
   // Функция для отрисовки вертикальных линий с датами
   const renderVerticalLines = () => {
-    return dateArray.map((date, index) => (
+    if (!minDate || !maxDate) {
+      return null;
+    }
+
+    const totalDays = Math.ceil(
+      (maxDate - minDate) / (1000 * 60 * 60 * 24)
+    );
+    const step = totalDays / (maxVerticalLines - 1); // Шаг между датами
+
+    const dateArray = [];
+    for (let i = 0; i < maxVerticalLines; i++) {
+      const currentDate = new Date(maxDate);
+      currentDate.setDate(maxDate.getDate() - Math.round(step * i));
+      dateArray.push(currentDate);
+    }
+
+    // Отрисовка вертикальных линий и дат
+    return dateArray.reverse().map((date, index) => (
       <div key={index} className={styles.flex}>
         <div className={styles.verticalLine} />
         <div className={styles.date}>{date.toLocaleDateString()}</div>
@@ -198,11 +70,7 @@ const Grid = ({ data, isLineVisible }) => {
 
   return (
     <>
-      <div
-        className={styles.grid}
-        onWheel={handleWheelScroll}
-        onMouseMove={handleMouseMove}
-      >
+      <div className={styles.grid}>
         {/* Отображение вертикальных линий и дат */}
         <div className={styles.containerVerticalLine}>
           {renderVerticalLines()}
@@ -215,8 +83,6 @@ const Grid = ({ data, isLineVisible }) => {
             data={data}
             minDate={minDate}
             maxDate={maxDate}
-            currentMinDate={dateArray[0]}
-            currentMaxDate={dateArray[dateArray.length - 1]}
             maxVerticalLines={maxVerticalLines}
           />
         </div>

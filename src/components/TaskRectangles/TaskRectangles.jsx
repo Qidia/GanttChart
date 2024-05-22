@@ -8,19 +8,10 @@ import TaskTooltip from "../TaskTooltip/TaskTooltip";
  * @param {Array} props.data - Данные о задачах.
  * @param {Date} props.minDate - Минимальная дата.
  * @param {Date} props.maxDate - Максимальная дата.
- * @param {Date} props.currentMinDate - Текущая минимальная дата.
- * @param {Date} props.currentMaxDate - Текущая максимальная дата.
  * @param {number} props.maxVerticalLines - Максимальное количество отображаемых вертикальных линий.
  * @returns {JSX.Element|null} - Элемент JSX компонента или null.
  */
-const TaskRectangles = ({
-  data,
-  minDate,
-  maxDate,
-  currentMinDate,
-  currentMaxDate,
-  maxVerticalLines,
-}) => {
+const TaskRectangles = ({ data, minDate, maxDate, maxVerticalLines }) => {
   // Состояние для отображения подсказки по задаче
   const [tooltip, setTooltip] = useState({
     task: null,
@@ -75,12 +66,12 @@ const TaskRectangles = ({
 
   // Вычисление параметров вертикальных линий для разметки временной шкалы
   const totalDays = Math.ceil(
-    (currentMaxDate - currentMinDate) / (1000 * 60 * 60 * 24)
+    (maxDate - minDate) / (1000 * 60 * 60 * 24)
   );
   const step = totalDays / (maxVerticalLines - 1);
   const verticalLines = Array.from({ length: maxVerticalLines }, (_, i) => {
-    const date = new Date(currentMaxDate);
-    date.setDate(currentMaxDate.getDate() - Math.round(step * i));
+    const date = new Date(maxDate);
+    date.setDate(maxDate.getDate() - Math.round(step * i));
     return date;
   }).reverse();
 
@@ -97,7 +88,7 @@ const TaskRectangles = ({
           const taskEndDate = new Date(task.endDate);
 
           // Проверка, входит ли задача в текущий временной диапазон
-          if (taskStartDate < currentMinDate || taskEndDate > currentMaxDate) {
+          if (taskStartDate < minDate || taskEndDate > maxDate) {
             return null;
           }
 
