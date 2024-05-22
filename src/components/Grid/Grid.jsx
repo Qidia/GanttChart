@@ -94,33 +94,50 @@ const Grid = ({ data, isLineVisible }) => {
 
     if (delta > 0) {
       // Прокрутка вниз
-      if (
-        hoveredIndex === 0 ||
-        newDateArray[hoveredIndex].getTime() >
-          newDateArray[hoveredIndex - 1].getTime()
-      ) {
-        // Уменьшаем левую дату
-        newDateArray[hoveredIndex].setDate(
-          newDateArray[hoveredIndex].getDate() - 1
-        );
-        // Увеличиваем правую дату
-        newDateArray[hoveredIndex + 1].setDate(
-          newDateArray[hoveredIndex + 1].getDate() + 1
-        );
 
-        // Изменение дат для всех линий слева от левой линии прокрутки
-        for (let i = hoveredIndex - 1; i >= 0; i--) {
-          if (i === 0) {
-            // Изменение крайней левой даты
-            newDateArray[i] = new Date(newDateArray[i + 1].getTime() - dateInterval);
-          } else {
-            newDateArray[i] = new Date(dateArray[i - 1]);
+      const current = newDateArray[hoveredIndex];
+      const next = newDateArray[hoveredIndex + 1];
+
+      const intervalBetweenDates = next - current;
+
+      if (intervalBetweenDates < dateInterval) {
+        if (
+          hoveredIndex === 0 ||
+          newDateArray[hoveredIndex].getTime() >
+            newDateArray[hoveredIndex - 1].getTime()
+        ) {
+          // Уменьшаем левую дату
+          newDateArray[hoveredIndex].setDate(
+            newDateArray[hoveredIndex].getDate() - 1
+          );
+          // Увеличиваем правую дату
+          newDateArray[hoveredIndex + 1].setDate(
+            newDateArray[hoveredIndex + 1].getDate() + 1
+          );
+
+          // Изменение дат для всех линий слева от левой линии прокрутки
+          for (let i = hoveredIndex - 1; i >= 0; i--) {
+            if (i === 0) {
+              // Изменение крайней левой даты
+              newDateArray[i] = new Date(
+                newDateArray[i + 1].getTime() - dateInterval
+              );
+            } else {
+              newDateArray[i] = new Date(dateArray[i - 1]);
+            }
           }
-        }
 
-        // Изменение даты для следующей линии справа от правой линии прокрутки
-        if (hoveredIndex + 2 < newDateArray.length) {
-          newDateArray[hoveredIndex + 2] = new Date(newDateArray[hoveredIndex + 3]);
+          // Изменение дат для всех линий справа от правой линии прокрутки
+          if (hoveredIndex + 2 < newDateArray.length) {
+            for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
+              newDateArray[i] = new Date(newDateArray[i + 1]);
+            }
+
+            // Изменение крайней правой даты
+            newDateArray[newDateArray.length - 1] = new Date(
+              newDateArray[newDateArray.length - 2].getTime() + dateInterval
+            );
+          }
         }
       }
     } else {

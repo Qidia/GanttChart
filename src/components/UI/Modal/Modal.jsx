@@ -12,7 +12,7 @@ import Button from "../Button/Button";
  * @param {ReactNode} props.children - Дочерние элементы модального окна.
  * @returns {ReactNode} - Возвращает элемент модального окна или null, если окно закрыто.
  */
-export const Modal = ({ isOpen, titleModal, onClose, children }) => {
+export const Modal = ({ isOpen, titleModal, onClose, children, type }) => {
   /* Обработка закрытия модалки по клику на крестик */
   const handleClose = () => onClose();
 
@@ -57,8 +57,21 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
   return (
     isOpen &&
     createPortal(
-      <div className={styles.modalContainer}>
-        <div ref={modalRef} className={styles.modalContent}>
+      <div
+        className={
+          type === "DepartmentsModal"
+            ? styles.departmentsModalContainer
+            : styles.modalContainer
+        }
+      >
+        <div
+          ref={modalRef}
+          className={
+            type === "DepartmentsModal"
+              ? styles.departmentsModalContent
+              : styles.modalContent
+          }
+        >
           <header className={styles.modalHeader}>
             <h2 className={styles.modalHeaderTitle}>{titleModal}</h2>
             <Button onClick={handleClose} className={styles.closeButton}>
@@ -75,7 +88,15 @@ export const Modal = ({ isOpen, titleModal, onClose, children }) => {
               </svg>
             </Button>
           </header>
-          <main className={styles.modalMain}>{children}</main>
+          <main
+            className={
+              type === "DepartmentsModal"
+                ? styles.departmentsModalMain
+                : styles.modalMain
+            }
+          >
+            {children}
+          </main>
         </div>
       </div>,
       document.body
