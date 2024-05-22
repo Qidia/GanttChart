@@ -55,13 +55,13 @@ const Grid = ({ data, isLineVisible }) => {
     generateDateArray(minDate, maxDate, maxVerticalLines)
   );
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [dateInterval, setDateInterval] = useState(null);
+  const [initialDateInterval, setInitialDateInterval] = useState(null);
 
   // Вычисление интервала между датами при первой загрузке
   useEffect(() => {
     if (dateArray.length > 1) {
-      const initialInterval = dateArray[1].getTime() - dateArray[0].getTime();
-      setDateInterval(initialInterval);
+      const interval = dateArray[1].getTime() - dateArray[0].getTime();
+      setInitialDateInterval(interval);
     }
   }, [dateArray]);
 
@@ -91,14 +91,27 @@ const Grid = ({ data, isLineVisible }) => {
     const delta = Math.sign(e.deltaY);
 
     const newDateArray = [...dateArray];
+    const current = new Date(newDateArray[hoveredIndex]);
+    const next = new Date(newDateArray[hoveredIndex + 1]);
 
-    if (delta > 0) {
-      // Прокрутка вниз
+    // Установим время на 00:00:00 для корректного сравнения дат
+    current.setHours(0, 0, 0, 0);
+    next.setHours(0, 0, 0, 0);
+
+    const intervalBetweenDates = next - current;
+
+    console.log(`initialDateInterval = ${initialDateInterval}`);
+    console.log(`intervalBetweenDates = ${intervalBetweenDates}`);
+
+    if (delta > 0 && intervalBetweenDates < initialDateInterval) {
+      console.log("2");
+
       if (
         hoveredIndex === 0 ||
         newDateArray[hoveredIndex].getTime() >
           newDateArray[hoveredIndex - 1].getTime()
       ) {
+        console.log("3");
         // Уменьшаем левую дату
         newDateArray[hoveredIndex].setDate(
           newDateArray[hoveredIndex].getDate() - 1
@@ -112,26 +125,30 @@ const Grid = ({ data, isLineVisible }) => {
         for (let i = hoveredIndex - 1; i >= 0; i--) {
           if (i === 0) {
             // Изменение крайней левой даты
-            newDateArray[i] = new Date(newDateArray[i + 1].getTime() - dateInterval);
+            console.log("4");
+            newDateArray[i] = new Date(
+              newDateArray[i + 1].getTime() - initialDateInterval
+            );
           } else {
-            newDateArray[i] = new Date(dateArray[i - 1]);
+            console.log("5");
+            newDateArray[i] = new Date(newDateArray[i - 1]);
           }
         }
 
-        // Изменение даты для следующей линии справа от правой линии прокрутки
+        // Изменение дат для всех линий справа от правой линии прокрутки
         if (hoveredIndex + 2 < newDateArray.length) {
-          newDateArray[hoveredIndex + 2] = new Date(newDateArray[hoveredIndex + 3]);
+          console.log("6");
+          for (let i = hoveredIndex + 2; i < newDateArray.length; i++) {
+            newDateArray[i] = new Date(newDateArray[i - 1].getTime() + initialDateInterval);
+          }
+
+          // Изменение крайней правой даты
+          newDateArray[newDateArray.length - 1] = new Date(
+            newDateArray[newDateArray.length - 2].getTime() + initialDateInterval
+          );
         }
       }
-    } else {
-      // Прокрутка вверх
-      const current = new Date(newDateArray[hoveredIndex]);
-      const next = new Date(newDateArray[hoveredIndex + 1]);
-
-      // Установим время на 00:00:00 для корректного сравнения дат
-      current.setHours(0, 0, 0, 0);
-      next.setHours(0, 0, 0, 0);
-
+    } else if (delta < 0) {
       const diffTime = next - current;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
