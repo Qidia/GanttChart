@@ -3,7 +3,6 @@ import styles from "./GanttChart.module.css";
 import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import Grid from "../Grid/Grid";
 import Button from "../UI/Button/Button";
-import DepartmentsModal from "../DepartmentsModal/DepartmentsModal";
 
 /**
  * Компонент диаграмма Ганта.
@@ -14,26 +13,12 @@ import DepartmentsModal from "../DepartmentsModal/DepartmentsModal";
 const GanttChart = ({ data }) => {
   const [isNamesVisible, setIsNamesVisible] = useState(false);
   const [isLineVisible, setIsLineVisible] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Добавляем уникальные идентификаторы для элементов данных
   const uniqueData = data.map((department, index) => ({
     ...department,
     uniqueId: `${department.id || "department"}-${index}`,
   }));
-
-  // Обработчик нажатия кнопки для открытия модального окна
-  const handleDepartmentClick = (department) => {
-    setSelectedDepartment(department);
-    setIsModalOpen(true);
-  };
-
-  // Обработчик закрытия модального окна
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedDepartment(null);
-  };
 
   return (
     <>
@@ -58,7 +43,6 @@ const GanttChart = ({ data }) => {
                     key={department.uniqueId} // Используем ключ для идентификации элемента в списке
                     id={department.uniqueId} // Используем id для передачи уникального идентификатора в компонент Button
                     className={styles.departmentButton}
-                    onClick={() => handleDepartmentClick(department)}
                   >
                     {department.name}
                   </Button>
@@ -77,19 +61,10 @@ const GanttChart = ({ data }) => {
             }`}
           >
             {/* Компонент отображения сетки графика и задач */}
-            <Grid data={uniqueData} isLineVisible={isLineVisible} showArrows={false} showSubtasks={false} />
+            <Grid data={uniqueData} isLineVisible={isLineVisible} />
           </div>
         </div>
       </div>
-
-      {/* Модальное окно для выбранного отдела */}
-      {selectedDepartment && (
-        <DepartmentsModal
-          isOpen={isModalOpen}
-          onClose={handleModalClose}
-          department={selectedDepartment}
-        />
-      )}
     </>
   );
 };

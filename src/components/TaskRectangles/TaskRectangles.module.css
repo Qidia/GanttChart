@@ -3,22 +3,6 @@
 }
 
 .taskRectangle {
+  position: absolute;
   cursor: pointer;
-}
-
-.arrow {
-  position: absolute;
-  height: 2px;
-  background-color: black;
-}
-
-.arrowHead {
-  position: absolute;
-  top: -2px;
-  right: -5px;
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-left: 5px solid black;
-  border-bottom: 5px solid transparent;
 }
