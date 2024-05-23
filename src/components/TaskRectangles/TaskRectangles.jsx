@@ -10,9 +10,9 @@ import DepartmentsModal from "../DepartmentsModal/DepartmentsModal";
  * @param {Date} props.minDate - Минимальная дата.
  * @param {Date} props.maxDate - Максимальная дата.
  * @param {number} props.maxVerticalLines - Максимальное количество отображаемых вертикальных линий.
- * @param {boolean} props.showArrows - Флаг отображения стрелок между задачами и подзадачами.
  * @param {Object} props.departmentColors - Цвета отделов.
  * @param {string} props.selectedOption - Выбранная опция отображения цветов.
+ * @param {boolean} props.showSubtasks - Флаг отображения подзадач.
  * @returns {JSX.Element|null} - Элемент JSX компонента или null.
  */
 const TaskRectangles = ({
@@ -155,6 +155,24 @@ const TaskRectangles = ({
       (index * departmentHeight) / (department.tasks.length || 1);
     const taskColor = getTaskColor(task, department, deptIndex);
 
+    // Проверка на наличие подзадач и установка фона
+    const hasSubtasks = task.tasks && task.tasks.length > 0;
+    const taskStyle = {
+      top: `${showSubtasks ? 0 : top}%`,
+      height: `${
+        showSubtasks ? 100 : departmentHeight / (department.tasks.length || 1)
+      }%`,
+      left: `${left}%`,
+      width: `${width}%`,
+      backgroundColor: hasSubtasks && showSubtasks ? "transparent" : taskColor,
+      position: "absolute",
+      outline: "1px solid transparent",
+      ...(showSubtasks && {
+        outline: "2px solid black",
+        outlineOffset: "-1px",
+      }),
+    };
+
     return (
       <div
         key={`${task.id}-${index}`}
@@ -162,18 +180,7 @@ const TaskRectangles = ({
       >
         <div
           className={` ${!showSubtasks ? styles.taskRectangle : ""}`}
-          style={{
-            top: ` ${showSubtasks ? 0 : top}%`,
-            height: `${
-              showSubtasks
-                ? 100
-                : departmentHeight / (department.tasks.length || 1)
-            }%`,
-            left: `${left}%`,
-            width: `${width}%`,
-            backgroundColor: taskColor,
-            position: "absolute",
-          }}
+          style={taskStyle}
           onMouseEnter={(e) => handleMouseEnter(e, task, department, taskColor)}
           onMouseLeave={handleMouseLeave}
           onClick={() => handleDepartmentClick(department)}
