@@ -12,8 +12,9 @@ import Button from "../UI/Button/Button";
  * @param {string} props.className - Классы стилей компонента.
  * @param {boolean} props.isNamesVisible - Чекбокс видимости наименований отделов.
  * @param {Function} props.setIsNamesVisible - Функция установки видимости наименований отделов.
- * @param {boolean} props.isLineVisible - Чекбокса видимости горизонтальной линии.
+ * @param {boolean} props.isLineVisible - Чекбокс видимости горизонтальной линии.
  * @param {Function} props.setIsLineVisible - Функция установки видимости горизонтальной линии.
+ * @param {Function} props.setSelectedOption - Функция для обновления выбранной опции.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
 const GanttChartManagement = ({
@@ -22,10 +23,15 @@ const GanttChartManagement = ({
   setIsNamesVisible,
   isLineVisible,
   setIsLineVisible,
+  setSelectedOption,
 }) => {
+  // Состояние для управления видимостью модального окна
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Состояние для управления состоянием чекбокса видимости наименований
   const [isChecked, setIsChecked] = useState(isNamesVisible);
-  const [selectedOption, setSelectedOption] = useState("По подразделениям");
+  // Состояние для управления выбранной опцией локально
+  const [selectedOptionLocal, setSelectedOptionLocal] =
+    useState("По подразделениям");
 
   /**
    * Функция открытия модального окна.
@@ -63,16 +69,13 @@ const GanttChartManagement = ({
    * @param {Object} selectedOption - Выбранная опция.
    */
   const handleSelectChange = (selectedOption) => {
-    setSelectedOption(selectedOption.label);
+    setSelectedOptionLocal(selectedOption.label); // Обновляем локальное состояние выбранной опции
+    setSelectedOption(selectedOption.label); // Передаем выбранную опцию в родительский компонент
     console.log(`Выбрали ${selectedOption.label}`);
   };
 
   // Опции для селекта
-  const options = [
-    { label: "По подразделениям" },
-    { label: "По статусу" },
-    { label: "По дисциплине потока" },
-  ];
+  const options = [{ label: "По подразделениям" }, { label: "По статусу" }];
 
   return (
     <>
@@ -111,7 +114,7 @@ const GanttChartManagement = ({
               options={options}
               label="Цвет:"
               disabled={false}
-              selectedOption={selectedOption}
+              selectedOption={selectedOptionLocal}
               onSelectChange={handleSelectChange}
               className="m-b-10"
             />
