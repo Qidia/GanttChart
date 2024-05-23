@@ -35,7 +35,7 @@ const GanttChart = ({ data }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case "не назначена":
-        return "#FFFFE0";
+        return "#90908c";
       case "назначена":
         return "#00CED1";
       case "в работе":
@@ -47,7 +47,7 @@ const GanttChart = ({ data }) => {
       case "частично закрыта":
         return "#9400D3";
       default:
-        return "#808080";
+        return "#e94639";
     }
   };
 
