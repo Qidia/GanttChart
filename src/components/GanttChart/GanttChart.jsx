@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./GanttChart.module.css";
 import GanttChartManagement from "../GanttChartManagement/GanttChartManagement";
 import Grid from "../Grid/Grid";
@@ -23,13 +23,24 @@ const GanttChart = ({ data }) => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   // Состояние для управления видимостью модального окна
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Состояние для хранения цветов отделов
+  const [departmentColors, setDepartmentColors] = useState({});
 
-  // Генерация уникальных цветов для отделов с помощью randomColor
-  const uniqueColors = randomColor({
-    count: data.length,
-    luminosity: "bright",
-    hue: "random",
-  });
+  // Генерация уникальных цветов для отделов с помощью randomColor и сохранение в состоянии
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const colors = randomColor({
+        count: data.length,
+        luminosity: "bright",
+        hue: "random",
+      });
+      const colorsMap = data.reduce((acc, department, index) => {
+        acc[department.id || `department-${index}`] = colors[index];
+        return acc;
+      }, {});
+      setDepartmentColors(colorsMap);
+    }
+  }, [data]);
 
   // Функция для получения цвета задачи в зависимости от статуса
   const getStatusColor = (status) => {
@@ -59,7 +70,7 @@ const GanttChart = ({ data }) => {
       ...task,
       color:
         selectedOption === "По подразделениям"
-          ? uniqueColors[deptIndex]
+          ? departmentColors[department.id || `department-${deptIndex}`]
           : getStatusColor(task.status), // Изменение цвета задач в зависимости от выбранной опции
     })),
   }));
