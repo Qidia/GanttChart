@@ -8,6 +8,7 @@
   overflow-wrap: break-word;
   pointer-events: none; /* Важно для предотвращения наведения курсора на всплывающее окно */
   visibility: hidden;
+  z-index: 1;
 }
 
 .colorBox {

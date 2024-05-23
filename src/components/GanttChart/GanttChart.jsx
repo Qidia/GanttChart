@@ -77,7 +77,7 @@ const GanttChart = ({ data }) => {
             }`}
           >
             {/* Компонент отображения сетки графика и задач */}
-            <Grid data={uniqueData} isLineVisible={isLineVisible} showArrows={false} showSubtasks={false} />
+            <Grid data={uniqueData} isLineVisible={isLineVisible} showSubtasks={false} />
           </div>
         </div>
       </div>
