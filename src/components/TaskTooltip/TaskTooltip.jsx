@@ -92,6 +92,9 @@ const TaskTooltip = ({ task, department, position, horizontalLineHeight }) => {
         <strong>Конец:</strong> {new Date(task.endDate).toLocaleDateString()}
       </div>
       <div>
+        <strong>Статус:</strong> {task.status}
+      </div>
+      <div>
         <strong>Цвет:</strong>{" "}
         <span
           style={{ backgroundColor: task.color }}
