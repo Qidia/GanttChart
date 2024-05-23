@@ -10,9 +10,17 @@ import TaskRectangles from "../TaskRectangles/TaskRectangles";
  * @param {boolean} props.isLineVisible - Флаг видимости горизонтальной линии.
  * @param {boolean} props.showArrows - Флаг отображения стрелок между задачами и подзадачами.
  * @param {boolean} props.showSubtasks - Флаг отображения подзадач.
+ * @param {Object} props.departmentColors - Цвета отделов.
+ * @param {string} props.selectedOption - Выбранная опция отображения цветов.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
-const Grid = ({ data, isLineVisible, showSubtasks }) => {
+const Grid = ({
+  data,
+  isLineVisible,
+  showSubtasks,
+  departmentColors,
+  selectedOption,
+}) => {
   /**
    * Функция для определения минимальной и максимальной даты среди всех задач и подзадач.
    * @returns {Object} - Объект с минимальной и максимальной датами.
@@ -118,6 +126,8 @@ const Grid = ({ data, isLineVisible, showSubtasks }) => {
             maxDate={maxDate}
             maxVerticalLines={maxVerticalLines}
             showSubtasks={showSubtasks}
+            departmentColors={departmentColors}
+            selectedOption={selectedOption}
           />
         </div>
       </div>

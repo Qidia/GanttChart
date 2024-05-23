@@ -42,39 +42,6 @@ const GanttChart = ({ data }) => {
     }
   }, [data]);
 
-  // Функция для получения цвета задачи в зависимости от статуса
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "не назначена":
-        return "#90908c";
-      case "назначена":
-        return "#00CED1";
-      case "в работе":
-        return "#4682B4";
-      case "закрыта":
-        return "#00FF7F";
-      case "условно закрыта":
-        return "#EE82EE";
-      case "частично закрыта":
-        return "#9400D3";
-      default:
-        return "#e94639";
-    }
-  };
-
-  // Добавляем уникальные идентификаторы и цвета для элементов данных
-  const uniqueData = data.map((department, deptIndex) => ({
-    ...department,
-    uniqueId: `${department.id || "department"}-${deptIndex}`,
-    tasks: department.tasks.map((task, taskIndex) => ({
-      ...task,
-      color:
-        selectedOption === "По подразделениям"
-          ? departmentColors[department.id || `department-${deptIndex}`]
-          : getStatusColor(task.status), // Изменение цвета задач в зависимости от выбранной опции
-    })),
-  }));
-
   // Обработчик нажатия кнопки для открытия модального окна
   const handleDepartmentClick = (department) => {
     setSelectedDepartment(department);
@@ -106,10 +73,9 @@ const GanttChart = ({ data }) => {
             <div className={styles.departmentName}>
               <div className="m-l-15 m-r-15">
                 {/* Отображение кнопок для выбора отдела */}
-                {uniqueData.map((department) => (
+                {data.map((department, index) => (
                   <Button
-                    key={department.uniqueId} // Используем ключ для идентификации элемента в списке
-                    id={department.uniqueId} // Используем id для передачи уникального идентификатора в компонент Button
+                    key={department.id || `department-${index}`} // Используем ключ для идентификации элемента в списке
                     className={styles.departmentButton}
                     onClick={() => handleDepartmentClick(department)}
                   >
@@ -131,9 +97,11 @@ const GanttChart = ({ data }) => {
           >
             {/* Компонент отображения сетки графика и задач */}
             <Grid
-              data={uniqueData}
+              data={data}
               isLineVisible={isLineVisible}
               showSubtasks={false}
+              departmentColors={departmentColors}
+              selectedOption={selectedOption}
             />
           </div>
         </div>

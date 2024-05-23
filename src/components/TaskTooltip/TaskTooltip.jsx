@@ -8,9 +8,16 @@ import styles from "./TaskTooltip.module.css";
  * @param {Object} props.department - Данные о подразделении.
  * @param {Object} props.position - Позиция подсказки.
  * @param {number} props.horizontalLineHeight - Высота горизонтальной линии.
+ * @param {string} props.color - Цвет задачи.
  * @returns {JSX.Element|null} - Элемент JSX компонента или null.
  */
-const TaskTooltip = ({ task, department, position, horizontalLineHeight }) => {
+const TaskTooltip = ({
+  task,
+  department,
+  position,
+  horizontalLineHeight,
+  color,
+}) => {
   // Ссылка на элемент подсказки
   const tooltipRef = useRef(null);
   // Состояние для позиции подсказки
@@ -97,7 +104,7 @@ const TaskTooltip = ({ task, department, position, horizontalLineHeight }) => {
       <div>
         <strong>Цвет:</strong>{" "}
         <span
-          style={{ backgroundColor: task.color }}
+          style={{ backgroundColor: color }}
           className={styles.colorBox}
         ></span>
       </div>
