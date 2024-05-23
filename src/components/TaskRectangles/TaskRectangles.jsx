@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./TaskRectangles.module.css";
 import TaskTooltip from "../TaskTooltip/TaskTooltip";
+import DepartmentsModal from "../DepartmentsModal/DepartmentsModal";
 
 /**
  * Компонент отображения прямоугольников задач.
@@ -20,24 +21,42 @@ const TaskRectangles = ({
   maxVerticalLines,
   showSubtasks,
 }) => {
+  // Состояние для отображения тултипа (подсказки)
   const [tooltip, setTooltip] = useState({
     task: null,
     department: null,
     position: null,
   });
 
-  // Обработчики событий для отображения и скрытия всплывающей подсказки
+  // Состояние для выбранного департамента и состояния модального окна
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Обработчик события наведения мыши на задачу
   const handleMouseEnter = (e, task, department) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
     setTooltip({ task, department, position: { top: mouseY, left: mouseX } });
   };
 
+  // Обработчик события ухода мыши с задачи
   const handleMouseLeave = () => {
     setTooltip({ task: null, department: null, position: null });
   };
 
-  // Функция для нахождения позиции даты на шкале времени
+  // Обработчик клика по департаменту
+  const handleDepartmentClick = (department) => {
+    setSelectedDepartment(department);
+    setIsModalOpen(true);
+  };
+
+  // Обработчик закрытия модального окна
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedDepartment(null);
+  };
+
+  // Функция для нахождения позиции задачи по дате
   const findPosition = (date) => {
     const lineIndex = verticalLines.findIndex((lineDate) => date <= lineDate);
     if (lineIndex === 0) return 0;
@@ -64,14 +83,14 @@ const TaskRectangles = ({
   const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
   const step = totalDays / (maxVerticalLines - 1);
 
-  // Создание массива с датами для вертикальных линий
+  // Создание массива с датами вертикальных линий
   const verticalLines = Array.from({ length: maxVerticalLines }, (_, i) => {
     const date = new Date(maxDate);
     date.setDate(maxDate.getDate() - Math.round(step * i));
     return date;
   }).reverse();
 
-  // Функция для рендеринга одной задачи
+  // Функция для рендеринга задачи
   const renderTask = (
     task,
     deptIndex,
@@ -105,10 +124,14 @@ const TaskRectangles = ({
         className={`${showSubtasks ? styles.showSubtasks_Subtasks : ""}`}
       >
         <div
-          className={`${styles.taskRectangle}`}
+          className={` ${!showSubtasks ? styles.taskRectangle : ""}`}
           style={{
             top: ` ${showSubtasks ? 0 : top}%`,
-            height: `${showSubtasks ? 100 : departmentHeight / (department.tasks.length || 1)}%`,
+            height: `${
+              showSubtasks
+                ? 100
+                : departmentHeight / (department.tasks.length || 1)
+            }%`,
             left: `${left}%`,
             width: `${width}%`,
             backgroundColor: taskColor,
@@ -116,6 +139,7 @@ const TaskRectangles = ({
           }}
           onMouseEnter={(e) => handleMouseEnter(e, task, department)}
           onMouseLeave={handleMouseLeave}
+          onClick={() => handleDepartmentClick(department)}
         />
         {/* Рекурсивный вызов для рендеринга подзадач */}
         {showSubtasks && task.tasks && (
@@ -137,7 +161,11 @@ const TaskRectangles = ({
   };
 
   return (
-    <div className={`${styles.containerHorizontalLine} ${showSubtasks ? styles.showSubtasks_Task : ''}`}>
+    <div
+      className={`${styles.containerHorizontalLine} ${
+        showSubtasks ? styles.showSubtasks_Task : ""
+      }`}
+    >
       {/* Рендеринг задач для каждого отдела */}
       {data.map((department, deptIndex) => {
         const departmentHeight = 100 / (data.length * 2);
@@ -153,6 +181,14 @@ const TaskRectangles = ({
           task={tooltip.task}
           department={tooltip.department}
           position={tooltip.position}
+        />
+      )}
+
+      {!showSubtasks && selectedDepartment && (
+        <DepartmentsModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          department={selectedDepartment}
         />
       )}
     </div>

@@ -33,9 +33,10 @@
   position: fixed;
   top: 10px;
   bottom: 10px;
-  right: 10px;
-  left: 10px;
+  right: 15px;
+  left: 15px;
   z-index: 1;
+  border-radius: var(--b-r);
 }
 
 .departmentsModalContent {
@@ -44,9 +45,13 @@
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   background: var(--bg-charts);
+  border-radius: var(--b-r);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .departmentsModalMain {
-  height: 90%;
-  padding-bottom: 85px;
+  height: 95%;
+  padding-bottom: 75px;
 }

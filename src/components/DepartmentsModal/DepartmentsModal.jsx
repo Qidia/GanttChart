@@ -13,16 +13,23 @@ import Grid from "../Grid/Grid";
  */
 const DepartmentsModal = ({ isOpen, onClose, department }) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      titleModal={department.name}
-      onClose={onClose}
-      type="DepartmentsModal"
-    >
-      <div className={styles.modalContent}>
-        <Grid data={[department]} isLineVisible={false} showArrows={true} showSubtasks={true} />
-      </div>
-    </Modal>
+    <div className={styles.overlay}>
+      <Modal
+        isOpen={isOpen}
+        titleModal={department.name}
+        onClose={onClose}
+        type="DepartmentsModal"
+      >
+        <div className={styles.modalContent}>
+          <Grid
+            data={[department]}
+            isLineVisible={false}
+            showArrows={true}
+            showSubtasks={true}
+          />
+        </div>
+      </Modal>
+    </div>
   );
 };
 
