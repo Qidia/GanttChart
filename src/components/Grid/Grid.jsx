@@ -8,7 +8,6 @@ import TaskRectangles from "../TaskRectangles/TaskRectangles";
  * @param {Object} props - Свойства компонента.
  * @param {Array} props.data - Данные о задачах.
  * @param {boolean} props.isLineVisible - Флаг видимости горизонтальной линии.
- * @param {boolean} props.showArrows - Флаг отображения стрелок между задачами и подзадачами.
  * @param {boolean} props.showSubtasks - Флаг отображения подзадач.
  * @param {Object} props.departmentColors - Цвета отделов.
  * @param {string} props.selectedOption - Выбранная опция отображения цветов.
@@ -76,32 +75,31 @@ const Grid = ({
   // Получение минимальной и максимальной даты среди всех задач и подзадач
   const { minDate, maxDate } = findMinMaxDates();
 
-  // Максимальное количество вертикальных линий
-  const maxVerticalLines = 30;
+  // Проверка наличия минимальной и максимальной даты
+  if (!minDate || !maxDate) {
+    return null;
+  }
+
+  // Вычисление общего количества дней и шага между вертикальными линиями
+  const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
+  const verticalLineCount = Math.min(totalDays + 1, 30);
+  const step = totalDays / (verticalLineCount - 1);
 
   /**
    * Функция для отрисовки вертикальных линий с датами.
    * @returns {JSX.Element[]|null} - Массив элементов JSX или null.
    */
   const renderVerticalLines = () => {
-    if (!minDate || !maxDate) {
-      return null;
-    }
-
-    // Вычисление общего количества дней и шага между вертикальными линиями
-    const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
-    const step = totalDays / (maxVerticalLines - 1);
-
     // Создание массива с датами для вертикальных линий
     const dateArray = [];
-    for (let i = 0; i < maxVerticalLines; i++) {
-      const currentDate = new Date(maxDate);
-      currentDate.setDate(maxDate.getDate() - Math.round(step * i));
+    for (let i = 0; i < verticalLineCount; i++) {
+      const currentDate = new Date(minDate);
+      currentDate.setDate(minDate.getDate() + Math.round(step * i));
       dateArray.push(currentDate);
     }
 
     // Рендеринг вертикальных линий с датами
-    return dateArray.reverse().map((date, index) => (
+    return dateArray.map((date, index) => (
       <div key={index} className={styles.verticalLines}>
         <div className={styles.verticalLine} />
         <div className={styles.date}>{date.toLocaleDateString()}</div>
@@ -124,7 +122,7 @@ const Grid = ({
             data={data}
             minDate={minDate}
             maxDate={maxDate}
-            maxVerticalLines={maxVerticalLines}
+            maxVerticalLines={verticalLineCount}
             showSubtasks={showSubtasks}
             departmentColors={departmentColors}
             selectedOption={selectedOption}
