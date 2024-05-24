@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Grid.module.css";
 import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import TaskRectangles from "../TaskRectangles/TaskRectangles";
@@ -11,6 +11,7 @@ import TaskRectangles from "../TaskRectangles/TaskRectangles";
  * @param {boolean} props.showSubtasks - Флаг отображения подзадач.
  * @param {Object} props.departmentColors - Цвета отделов.
  * @param {string} props.selectedOption - Выбранная опция отображения цветов.
+ * @param {Object} props.dateRange - Выбранный диапазон дат.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
 const Grid = ({
@@ -19,7 +20,17 @@ const Grid = ({
   showSubtasks,
   departmentColors,
   selectedOption,
+  dateRange,
 }) => {
+  // Используем useEffect для логирования диапазона дат при его изменении
+  useEffect(() => {
+    if (dateRange && dateRange.startDate && dateRange.endDate) {
+      console.log(
+        `Диапазон: from ${dateRange.startDate.toLocaleDateString()} to ${dateRange.endDate.toLocaleDateString()}`
+      );
+    }
+  }, [dateRange]);
+
   /**
    * Функция для определения минимальной и максимальной даты среди всех задач и подзадач.
    * @returns {Object} - Объект с минимальной и максимальной датами.
@@ -29,9 +40,11 @@ const Grid = ({
       return { minDate: null, maxDate: null };
     }
 
+    // Инициализация минимальной и максимальной даты первой задачей
     let minDate = new Date(data[0].tasks[0].startDate);
     let maxDate = new Date(data[0].tasks[0].endDate);
 
+    // Проход по всем задачам и подзадачам для определения их минимальных и максимальных дат
     data.forEach((department) => {
       department.tasks.forEach((task) => {
         const taskStartDate = new Date(task.startDate);
@@ -75,7 +88,7 @@ const Grid = ({
   // Получение минимальной и максимальной даты среди всех задач и подзадач
   const { minDate, maxDate } = findMinMaxDates();
 
-  // Проверка наличия минимальной и максимальной даты
+  // Проверка наличия минимальной и максимальной даты, если отсутствуют, возвращаем null
   if (!minDate || !maxDate) {
     return null;
   }

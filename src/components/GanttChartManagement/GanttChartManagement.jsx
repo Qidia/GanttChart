@@ -15,6 +15,7 @@ import Button from "../UI/Button/Button";
  * @param {boolean} props.isLineVisible - Чекбокс видимости горизонтальной линии.
  * @param {Function} props.setIsLineVisible - Функция установки видимости горизонтальной линии.
  * @param {Function} props.setSelectedOption - Функция для обновления выбранной опции.
+ * @param {Function} props.onDateRangeChange - Функция для обновления диапазона дат.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
 const GanttChartManagement = ({
@@ -24,6 +25,7 @@ const GanttChartManagement = ({
   isLineVisible,
   setIsLineVisible,
   setSelectedOption,
+  onDateRangeChange,
 }) => {
   // Состояние для управления видимостью модального окна
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,8 +54,8 @@ const GanttChartManagement = ({
    * @param {boolean} newValue - Новое значение состояния чекбокса.
    */
   const handleCheckboxChange = (newValue) => {
-    setIsChecked(newValue);
-    setIsNamesVisible(newValue);
+    setIsChecked(newValue); // Обновляем локальное состояние чекбокса
+    setIsNamesVisible(newValue); // Обновляем состояние видимости наименований в родительском компоненте
   };
 
   /**
@@ -61,7 +63,7 @@ const GanttChartManagement = ({
    * @param {boolean} newValue - Новое значение состояния чекбокса.
    */
   const handleLineCheckboxChange = (newValue) => {
-    setIsLineVisible(newValue);
+    setIsLineVisible(newValue); // Обновляем состояние видимости горизонтальной линии в родительском компоненте
   };
 
   /**
@@ -71,7 +73,7 @@ const GanttChartManagement = ({
   const handleSelectChange = (selectedOption) => {
     setSelectedOptionLocal(selectedOption.label); // Обновляем локальное состояние выбранной опции
     setSelectedOption(selectedOption.label); // Передаем выбранную опцию в родительский компонент
-    console.log(`Выбрали ${selectedOption.label}`);
+    console.log(`Выбрали ${selectedOption.label}`); // Логируем выбранную опцию
   };
 
   // Опции для селекта
@@ -107,7 +109,7 @@ const GanttChartManagement = ({
             {/* Компонент выбора диапазона дат */}
             <div className={`${styles.dateRangeComp} m-b-10`}>
               <p className="m-r-10">Дата:</p>
-              <DateRangeProduction />
+              <DateRangeProduction onDateRangeChange={onDateRangeChange} />
             </div>
             {/* Компонент селекта для выбора отображения цвета */}
             <Select

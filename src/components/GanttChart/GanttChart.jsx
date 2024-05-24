@@ -25,6 +25,11 @@ const GanttChart = ({ data }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Состояние для хранения цветов отделов
   const [departmentColors, setDepartmentColors] = useState({});
+  // Состояние для хранения диапазона дат
+  const [dateRange, setDateRange] = useState({
+    startDate: null,
+    endDate: null,
+  });
 
   // Генерация уникальных цветов для отделов с помощью randomColor и сохранение в состоянии
   useEffect(() => {
@@ -54,6 +59,12 @@ const GanttChart = ({ data }) => {
     setSelectedDepartment(null);
   };
 
+  // Обработчик изменения диапазона дат
+  const handleDateRangeChange = (range) => {
+    setDateRange(range);
+    console.log("Selected date range:", range);
+  };
+
   return (
     <>
       {/* Компонент управления параметрами графика */}
@@ -64,9 +75,11 @@ const GanttChart = ({ data }) => {
         isLineVisible={isLineVisible} // Передаем состояние видимости линии в GanttChartManagement
         setIsLineVisible={setIsLineVisible} // Передаем функцию для обновления состояния видимости линии
         setSelectedOption={setSelectedOption} // Передаем функцию для обновления выбранной опции
+        onDateRangeChange={handleDateRangeChange} // Передаем функцию для обновления диапазона дат
       />
 
       <div className={styles.container}>
+        {/* Рендеринг имен отделов */}
         {isNamesVisible && (
           <div className={styles.departmentsNames}>
             <h3>Список подразделений</h3>
@@ -97,11 +110,12 @@ const GanttChart = ({ data }) => {
           >
             {/* Компонент отображения сетки графика и задач */}
             <Grid
-              data={data}
-              isLineVisible={isLineVisible}
-              showSubtasks={false}
-              departmentColors={departmentColors}
-              selectedOption={selectedOption}
+              data={data} // Передаем данные для отображения
+              isLineVisible={isLineVisible} // Передаем состояние видимости линии
+              showSubtasks={false} // Передаем состояние видимости подзадач
+              departmentColors={departmentColors} // Передаем цвета отделов
+              selectedOption={selectedOption} // Передаем выбранную опцию
+              dateRange={dateRange} // Передаем диапазон дат
             />
           </div>
         </div>
@@ -110,9 +124,9 @@ const GanttChart = ({ data }) => {
       {/* Модальное окно для выбранного отдела */}
       {selectedDepartment && (
         <DepartmentsModal
-          isOpen={isModalOpen}
-          onClose={handleModalClose}
-          department={selectedDepartment}
+          isOpen={isModalOpen} // Передаем состояние видимости модального окна
+          onClose={handleModalClose} // Передаем функцию для закрытия модального окна
+          department={selectedDepartment} // Передаем данные выбранного отдела
         />
       )}
     </>
