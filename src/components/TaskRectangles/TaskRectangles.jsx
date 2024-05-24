@@ -85,7 +85,7 @@ const TaskRectangles = ({
 
   // Функция для получения цвета задачи в зависимости от выбранной опции
   const getTaskColor = (task, department, deptIndex) => {
-    if (selectedOption === "По подразделениям") {
+    if (selectedOption === "По отделам") {
       return departmentColors[department.id || `department-${deptIndex}`];
     }
     return getStatusColor(task.status);

@@ -33,7 +33,7 @@ const GanttChartManagement = ({
   const [isChecked, setIsChecked] = useState(isNamesVisible);
   // Состояние для управления выбранной опцией локально
   const [selectedOptionLocal, setSelectedOptionLocal] =
-    useState("По подразделениям");
+    useState("По отделам");
 
   /**
    * Функция открытия модального окна.
@@ -77,7 +77,7 @@ const GanttChartManagement = ({
   };
 
   // Опции для селекта
-  const options = [{ label: "По подразделениям" }, { label: "По статусу" }];
+  const options = [{ label: "По отделам" }, { label: "По статусу" }];
 
   return (
     <>

@@ -18,7 +18,7 @@ const GanttChart = ({ data }) => {
   // Состояние для управления видимостью горизонтальной линии
   const [isLineVisible, setIsLineVisible] = useState(false);
   // Состояние для управления выбранной опцией отображения цветов
-  const [selectedOption, setSelectedOption] = useState("По подразделениям");
+  const [selectedOption, setSelectedOption] = useState("По отделам");
   // Состояние для управления выбранным отделом
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   // Состояние для управления видимостью модального окна
@@ -62,7 +62,7 @@ const GanttChart = ({ data }) => {
   // Обработчик изменения диапазона дат
   const handleDateRangeChange = (range) => {
     setDateRange(range);
-    console.log("Selected date range:", range);
+    console.log("Выбранный диапазон дат:", range);
   };
 
   return (
