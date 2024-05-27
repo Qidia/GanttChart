@@ -9,15 +9,17 @@ import "react-date-range/dist/theme/default.css"; // Импорт дефолтн
 /**
  * Компонент для выбора диапазона дат.
  * @param {Object} props - Свойства компонента.
+ * @param {Date} props.initialStartDate - Начальная дата диапазона.
+ * @param {Date} props.initialEndDate - Конечная дата диапазона.
  * @param {Function} props.onDateRangeChange - Функция, вызываемая при изменении диапазона дат.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
-const DateRangeProduction = ({ onDateRangeChange }) => {
+const DateRangeProduction = ({ initialStartDate, initialEndDate, onDateRangeChange }) => {
   // Состояние для диапазона дат
   const [range, setRange] = useState([
     {
-      startDate: new Date(), // Начальная дата диапазона
-      endDate: addDays(new Date(), 7), // Конечная дата диапазона через 7 дней от текущей даты
+      startDate: initialStartDate, // Начальная дата диапазона из пропсов
+      endDate: initialEndDate, // Конечная дата диапазона из пропсов
       key: "selection", // Ключ для идентификации диапазона
     },
   ]);
@@ -28,10 +30,23 @@ const DateRangeProduction = ({ onDateRangeChange }) => {
   // Ссылка для доступа к DOM-элементу календаря
   const refOne = useRef(null);
 
-  // Эффект для добавления слушателей событий при загрузке компонента
+  // Эффект для обновления состояния диапазона дат при изменении начальных дат из пропсов
+  useEffect(() => {
+    setRange([
+      {
+        startDate: initialStartDate, // Начальная дата диапазона из пропсов
+        endDate: initialEndDate, // Конечная дата диапазона из пропсов
+        key: "selection", // Ключ для идентификации диапазона
+      },
+    ]);
+  }, [initialStartDate, initialEndDate]);
+
+  // Эффект для добавления и удаления слушателя событий при загрузке компонента
   useEffect(() => {
     // Слушатель события клика за пределами компонента для скрытия календаря
     document.addEventListener("click", hideOnClickOutside, true);
+    // Удаление слушателя при "размонтировании" компонента
+    return () => document.removeEventListener("click", hideOnClickOutside, true);
   }, []);
 
   /**
@@ -49,14 +64,15 @@ const DateRangeProduction = ({ onDateRangeChange }) => {
    * @param {Object} item - Объект с выбранным диапазоном дат.
    */
   const handleSelect = (item) => {
+    // Функция для сброса времени у даты
     const resetTime = (date) => {
       const newDate = new Date(date);
       newDate.setHours(3, 0, 0, 0);
       return newDate;
     };
 
-    const startDate = resetTime(item.selection.startDate);
-    const endDate = resetTime(item.selection.endDate);
+    const startDate = resetTime(item.selection.startDate); // Сброс времени начальной даты
+    const endDate = resetTime(item.selection.endDate); // Сброс времени конечной даты
 
     setRange([{ startDate, endDate, key: "selection" }]); // Обновляем состояние диапазона дат
     onDateRangeChange({ startDate, endDate }); // Вызываем функцию для передачи выбранного диапазона в родительский компонент
@@ -74,7 +90,6 @@ const DateRangeProduction = ({ onDateRangeChange }) => {
         readOnly
         onClick={() => setOpen((open) => !open)} // Обработка клика для открытия/закрытия календаря
       />
-
       {/* Компонент DateRange */}
       <div className={styles.calendar} ref={refOne}>
         {/* Рендер компонента DateRange при открытом состоянии */}

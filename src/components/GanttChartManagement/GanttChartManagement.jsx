@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import styles from "./GanttChartManagement.module.css";
-import { Modal } from "../UI/Modal/Modal";
-import Select from "../UI/Select/Select";
-import DateRangeProduction from "../DateRangeProduction/DateRangeProduction";
-import Checkbox from "../UI/Checkbox/Checkbox";
-import Button from "../UI/Button/Button";
+import styles from "./GanttChartManagement.module.css"; // Импорт модуля стилей компонента GanttChartManagement
+import { Modal } from "../UI/Modal/Modal"; // Импорт компонента Modal из библиотеки пользовательских интерфейсов
+import Select from "../UI/Select/Select"; // Импорт компонента Select из библиотеки пользовательских интерфейсов
+import DateRangeProduction from "../DateRangeProduction/DateRangeProduction"; // Импорт компонента DateRangeProduction
+import Checkbox from "../UI/Checkbox/Checkbox"; // Импорт компонента Checkbox из библиотеки пользовательских интерфейсов
+import Button from "../UI/Button/Button"; // Импорт компонента Button из библиотеки пользовательских интерфейсов
+import { addDays } from "date-fns"; // Импорт функции добавления дней к дате из библиотеки date-fns
 
 /**
  * Компонент управления параметрами диаграммы Ганта.
@@ -33,6 +34,11 @@ const GanttChartManagement = ({
   const [isChecked, setIsChecked] = useState(isNamesVisible);
   // Состояние для управления выбранной опцией локально
   const [selectedOptionLocal, setSelectedOptionLocal] = useState("По отделам");
+  // Состояние для управления выбранным диапазоном дат
+  const [selectedDateRange, setSelectedDateRange] = useState({
+    startDate: new Date(),
+    endDate: addDays(new Date(), 7),
+  });
 
   /**
    * Функция открытия модального окна.
@@ -83,17 +89,8 @@ const GanttChartManagement = ({
    * @param {Object} range - Объект с диапазоном дат.
    */
   const handleDateRangeChange = (range) => {
-    const resetTime = (date) => {
-      const newDate = new Date(date);
-      newDate.setHours(3, 0, 0, 0);
-      return newDate;
-    };
-
-    const startDate = resetTime(range.startDate);
-    const endDate = resetTime(range.endDate);
-    if (startDate < endDate) {
-      onDateRangeChange({ startDate, endDate });
-    }
+    setSelectedDateRange(range); // Обновляем локальное состояние выбранного диапазона дат
+    onDateRangeChange(range); // Передаем новый диапазон дат в родительский компонент
   };
 
   return (
@@ -126,7 +123,11 @@ const GanttChartManagement = ({
             {/* Компонент выбора диапазона дат */}
             <div className={`${styles.dateRangeComp} m-b-10`}>
               <p className="m-r-10">Дата:</p>
-              <DateRangeProduction onDateRangeChange={handleDateRangeChange} />
+              <DateRangeProduction
+                initialStartDate={selectedDateRange.startDate} // Начальная дата для компонента DateRangeProduction
+                initialEndDate={selectedDateRange.endDate} // Конечная дата для компонента DateRangeProduction
+                onDateRangeChange={handleDateRangeChange} // Обработчик изменения диапазона дат
+              />
             </div>
             {/* Компонент селекта для выбора отображения цвета */}
             <Select
