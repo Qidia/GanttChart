@@ -67,6 +67,7 @@ const TaskRectangles = ({
 
   // Функция для нахождения позиции задачи по дате
   const findPosition = (date) => {
+    console.log(verticalLines);
     const lineIndex = verticalLines.findIndex((lineDate) => date <= lineDate);
     if (lineIndex === 0) return 0;
     if (lineIndex === -1) return 100;

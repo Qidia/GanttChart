@@ -49,8 +49,17 @@ const DateRangeProduction = ({ onDateRangeChange }) => {
    * @param {Object} item - Объект с выбранным диапазоном дат.
    */
   const handleSelect = (item) => {
-    setRange([item.selection]); // Обновляем состояние диапазона дат
-    onDateRangeChange(item.selection); // Вызываем функцию для передачи выбранного диапазона в родительский компонент
+    const resetTime = (date) => {
+      const newDate = new Date(date);
+      newDate.setHours(3, 0, 0, 0);
+      return newDate;
+    };
+
+    const startDate = resetTime(item.selection.startDate);
+    const endDate = resetTime(item.selection.endDate);
+
+    setRange([{ startDate, endDate, key: "selection" }]); // Обновляем состояние диапазона дат
+    onDateRangeChange({ startDate, endDate }); // Вызываем функцию для передачи выбранного диапазона в родительский компонент
   };
 
   return (

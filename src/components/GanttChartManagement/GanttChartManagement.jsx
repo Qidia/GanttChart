@@ -32,8 +32,7 @@ const GanttChartManagement = ({
   // Состояние для управления состоянием чекбокса видимости наименований
   const [isChecked, setIsChecked] = useState(isNamesVisible);
   // Состояние для управления выбранной опцией локально
-  const [selectedOptionLocal, setSelectedOptionLocal] =
-    useState("По отделам");
+  const [selectedOptionLocal, setSelectedOptionLocal] = useState("По отделам");
 
   /**
    * Функция открытия модального окна.
@@ -79,6 +78,24 @@ const GanttChartManagement = ({
   // Опции для селекта
   const options = [{ label: "По отделам" }, { label: "По статусу" }];
 
+  /**
+   * Обработчик изменения диапазона дат.
+   * @param {Object} range - Объект с диапазоном дат.
+   */
+  const handleDateRangeChange = (range) => {
+    const resetTime = (date) => {
+      const newDate = new Date(date);
+      newDate.setHours(3, 0, 0, 0);
+      return newDate;
+    };
+
+    const startDate = resetTime(range.startDate);
+    const endDate = resetTime(range.endDate);
+    if (startDate < endDate) {
+      onDateRangeChange({ startDate, endDate });
+    }
+  };
+
   return (
     <>
       <div className={className}>
@@ -109,7 +126,7 @@ const GanttChartManagement = ({
             {/* Компонент выбора диапазона дат */}
             <div className={`${styles.dateRangeComp} m-b-10`}>
               <p className="m-r-10">Дата:</p>
-              <DateRangeProduction onDateRangeChange={onDateRangeChange} />
+              <DateRangeProduction onDateRangeChange={handleDateRangeChange} />
             </div>
             {/* Компонент селекта для выбора отображения цвета */}
             <Select

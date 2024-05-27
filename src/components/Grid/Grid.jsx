@@ -85,8 +85,22 @@ const Grid = ({
     return { minDate, maxDate };
   };
 
-  // Получение минимальной и максимальной даты среди всех задач и подзадач
-  const { minDate, maxDate } = findMinMaxDates();
+  // Если dateRange был передан и содержит корректные startDate и endDate, используем их
+  let minDate, maxDate;
+  if (
+    dateRange &&
+    dateRange.startDate &&
+    dateRange.endDate &&
+    new Date(dateRange.startDate) < new Date(dateRange.endDate)
+  ) {
+    minDate = new Date(dateRange.startDate);
+    maxDate = new Date(dateRange.endDate);
+  } else {
+    // В противном случае рассчитываем minDate и maxDate на основе данных задач
+    const dates = findMinMaxDates();
+    minDate = dates.minDate;
+    maxDate = dates.maxDate;
+  }
 
   // Проверка наличия минимальной и максимальной даты, если отсутствуют, возвращаем null
   if (!minDate || !maxDate) {
