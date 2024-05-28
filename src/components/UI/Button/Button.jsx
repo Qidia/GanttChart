@@ -18,7 +18,7 @@ const Button = ({ prefix, type, children, className, id, onClick }) => {
       type={type}
       id={id}
       onClick={onClick}
-      title={children} // добавляем title для отображения полного текста при наведении
+      title={typeof children === "string" ? children : null} // добавляем title для отображения полного текста при наведении
     >
       {prefix && <div>{prefix}</div>}
       {children}

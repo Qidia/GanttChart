@@ -78,7 +78,6 @@ const GanttChartManagement = ({
   const handleSelectChange = (selectedOption) => {
     setSelectedOptionLocal(selectedOption.label); // Обновляем локальное состояние выбранной опции
     setSelectedOption(selectedOption.label); // Передаем выбранную опцию в родительский компонент
-    console.log(`Выбрали ${selectedOption.label}`); // Логируем выбранную опцию
   };
 
   // Опции для селекта

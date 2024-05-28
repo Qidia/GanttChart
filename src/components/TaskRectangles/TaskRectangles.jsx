@@ -13,6 +13,7 @@ import DepartmentsModal from "../DepartmentsModal/DepartmentsModal";
  * @param {Object} props.departmentColors - Цвета отделов.
  * @param {string} props.selectedOption - Выбранная опция отображения цветов.
  * @param {boolean} props.showSubtasks - Флаг отображения подзадач.
+ * @param {boolean} props.step - Шаг (количество дней между соседними вертикальными линиями).
  * @returns {JSX.Element|null} - Элемент JSX компонента или null.
  */
 const TaskRectangles = ({
@@ -23,6 +24,7 @@ const TaskRectangles = ({
   showSubtasks,
   departmentColors,
   selectedOption,
+  step,
 }) => {
   // Состояние для отображения тултипа (подсказки)
   const [tooltip, setTooltip] = useState({
@@ -116,10 +118,6 @@ const TaskRectangles = ({
   if (!minDate || !maxDate) {
     return null;
   }
-
-  // Вычисление общего количества дней и шага между вертикальными линиями
-  const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
-  const step = totalDays / (maxVerticalLines - 1);
 
   // Создание массива с датами вертикальных линий
   const verticalLines = Array.from({ length: maxVerticalLines }, (_, i) => {

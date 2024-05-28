@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./DateRangeProduction.module.css"; // Импорт модуля стилей компонента DateRangeProduction
 import { DateRange } from "react-date-range"; // Импорт компонента DateRange из библиотеки react-date-range
 import format from "date-fns/format"; // Импорт функции форматирования даты из библиотеки date-fns
-import { addDays } from "date-fns"; // Импорт функции добавления дней к дате из библиотеки date-fns
 import "react-date-range/dist/styles.css"; // Импорт стилей компонента DateRange
 import "react-date-range/dist/theme/default.css"; // Импорт дефолтной темы компонента DateRange
 
@@ -14,7 +13,11 @@ import "react-date-range/dist/theme/default.css"; // Импорт дефолтн
  * @param {Function} props.onDateRangeChange - Функция, вызываемая при изменении диапазона дат.
  * @returns {JSX.Element} - Элемент JSX компонента.
  */
-const DateRangeProduction = ({ initialStartDate, initialEndDate, onDateRangeChange }) => {
+const DateRangeProduction = ({
+  initialStartDate,
+  initialEndDate,
+  onDateRangeChange,
+}) => {
   // Состояние для диапазона дат
   const [range, setRange] = useState([
     {
@@ -46,7 +49,8 @@ const DateRangeProduction = ({ initialStartDate, initialEndDate, onDateRangeChan
     // Слушатель события клика за пределами компонента для скрытия календаря
     document.addEventListener("click", hideOnClickOutside, true);
     // Удаление слушателя при "размонтировании" компонента
-    return () => document.removeEventListener("click", hideOnClickOutside, true);
+    return () =>
+      document.removeEventListener("click", hideOnClickOutside, true);
   }, []);
 
   /**

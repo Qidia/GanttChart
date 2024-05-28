@@ -22,15 +22,6 @@ const Grid = ({
   selectedOption,
   dateRange,
 }) => {
-  // Используем useEffect для логирования диапазона дат при его изменении
-  useEffect(() => {
-    if (dateRange && dateRange.startDate && dateRange.endDate) {
-      console.log(
-        `Диапазон: from ${dateRange.startDate.toLocaleDateString()} to ${dateRange.endDate.toLocaleDateString()}`
-      );
-    }
-  }, [dateRange]);
-
   /**
    * Функция для определения минимальной и максимальной даты среди всех задач и подзадач.
    * @returns {Object} - Объект с минимальной и максимальной датами.
@@ -85,6 +76,7 @@ const Grid = ({
     return { minDate, maxDate };
   };
 
+  const maxVerticalLines = 30; // Максимальное количество веркальтиных линий
   // Если dateRange был передан и содержит корректные startDate и endDate, используем их
   let minDate, maxDate;
   if (
@@ -109,7 +101,7 @@ const Grid = ({
 
   // Вычисление общего количества дней и шага между вертикальными линиями
   const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
-  const verticalLineCount = Math.min(totalDays + 1, 30);
+  const verticalLineCount = Math.min(totalDays + 1, maxVerticalLines);
   const step = totalDays / (verticalLineCount - 1);
 
   /**
@@ -153,6 +145,7 @@ const Grid = ({
             showSubtasks={showSubtasks}
             departmentColors={departmentColors}
             selectedOption={selectedOption}
+            step={step}
           />
         </div>
       </div>

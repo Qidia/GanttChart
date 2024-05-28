@@ -62,7 +62,6 @@ const GanttChart = ({ data }) => {
   // Обработчик изменения диапазона дат
   const handleDateRangeChange = (range) => {
     setDateRange(range);
-    console.log("Выбранный диапазон дат:", range);
   };
 
   return (
