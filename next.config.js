@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
-module.exports = () => {
-  return {
-    output: "export",
-  };
-};
+const nextConfig = {
+  distDir: 'build',
+}
+
+module.exports = nextConfig
