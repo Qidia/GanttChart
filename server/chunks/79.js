@@ -1,1 +1,0 @@
-exports.id=79,exports.ids=[79],exports.modules={2079:(s,t,a)=>{"use strict";a.r(t),a.d(t,{default:()=>_app});var e=a(997);a(9266),a(108),a(4361),a(6689);let Layouts_MainLayout=({children:s})=>e.jsx(e.Fragment,{children:e.jsx("div",{children:s})}),_app=({Component:s,pageProps:t})=>e.jsx(Layouts_MainLayout,{children:e.jsx(s,{...t})})},4361:()=>{},108:()=>{},9266:()=>{}};
