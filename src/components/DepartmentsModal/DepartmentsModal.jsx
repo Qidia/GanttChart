@@ -28,12 +28,14 @@ const DepartmentsModal = ({ isOpen, onClose, department, task, taskIndex }) => {
               data={[{ ...department, tasks: [task] }]}
               isLineVisible={false}
               showSubtasks={true}
+              outlineColor={false}
             />
           ) : (
             <Grid
               data={[department]}
               isLineVisible={false}
               showSubtasks={false}
+              outlineColor={true}
             />
           )}
         </div>

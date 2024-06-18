@@ -25,6 +25,7 @@ const TaskRectangles = ({
   departmentColors,
   selectedOption,
   step,
+  outlineColor
 }) => {
   // Состояние для отображения тултипа (подсказки)
   const [tooltip, setTooltip] = useState({
@@ -171,6 +172,10 @@ const TaskRectangles = ({
       backgroundColor: hasSubtasks && showSubtasks ? "transparent" : taskColor,
       position: "absolute",
       outline: "1px solid transparent",
+      ...(outlineColor && {
+        outline: "2px solid black",
+        outlineOffset: "-1px",
+      }),
       ...(showSubtasks && {
         outline: "2px solid black",
         outlineOffset: "-1px",

@@ -21,6 +21,7 @@ const Grid = ({
   departmentColors,
   selectedOption,
   dateRange,
+  outlineColor
 }) => {
   /**
    * Функция для определения минимальной и максимальной даты среди всех задач и подзадач.
@@ -101,7 +102,11 @@ const Grid = ({
 
   // Вычисление общего количества дней и шага между вертикальными линиями
   const totalDays = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24));
+
+
   const verticalLineCount = Math.min(totalDays + 1, maxVerticalLines);
+
+  
   const step = totalDays / (verticalLineCount - 1);
 
   /**
@@ -146,6 +151,7 @@ const Grid = ({
             departmentColors={departmentColors}
             selectedOption={selectedOption}
             step={step}
+            outlineColor={outlineColor}
           />
         </div>
       </div>
