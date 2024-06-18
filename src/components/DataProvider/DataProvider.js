@@ -15,7 +15,7 @@ const DataProvider = ({ children }) => {
      */
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/departments"); // Путь к API маршруту
+        const response = await fetch("./api/departments"); // Путь к API маршруту
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

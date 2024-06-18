@@ -9,24 +9,33 @@ import Grid from "../Grid/Grid";
  * @param {boolean} props.isOpen - Флаг, указывающий, открыто ли модальное окно.
  * @param {Function} props.onClose - Функция обратного вызова при закрытии модального окна.
  * @param {Object} props.department - Данные о подразделении.
+ * @param {Object} props.task - Данные о задаче.
+ * @param {number} props.taskIndex - Индекс задачи.
  * @returns {ReactNode} - Возвращает элемент модального окна или null, если окно закрыто.
  */
-const DepartmentsModal = ({ isOpen, onClose, department }) => {
+const DepartmentsModal = ({ isOpen, onClose, department, task, taskIndex }) => {
   return (
     <div className={styles.overlay}>
       <Modal
         isOpen={isOpen}
-        titleModal={department.name}
+        titleModal={`${task ? task.title : department.name}`}
         onClose={onClose}
         type="DepartmentsModal"
       >
         <div className={styles.modalContent}>
-          <Grid
-            data={[department]}
-            isLineVisible={false}
-            showArrows={true}
-            showSubtasks={true}
-          />
+          {task ? (
+            <Grid
+              data={[{ ...department, tasks: [task] }]}
+              isLineVisible={false}
+              showSubtasks={true}
+            />
+          ) : (
+            <Grid
+              data={[department]}
+              isLineVisible={false}
+              showSubtasks={false}
+            />
+          )}
         </div>
       </Modal>
     </div>

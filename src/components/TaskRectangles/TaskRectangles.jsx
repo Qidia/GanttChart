@@ -34,8 +34,10 @@ const TaskRectangles = ({
     color: null,
   });
 
-  // Состояние для выбранного департамента и состояния модального окна
+  // Состояние для выбранного департамента, выбранной задачи и состояния модального окна
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [taskIndex, setTaskIndex] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Обработчик события наведения мыши на задачу
@@ -55,9 +57,11 @@ const TaskRectangles = ({
     setTooltip({ task: null, department: null, position: null, color: null });
   };
 
-  // Обработчик клика по департаменту
-  const handleDepartmentClick = (department) => {
+  // Обработчик клика по задаче
+  const handleTaskClick = (department, task, index) => {
     setSelectedDepartment(department);
+    setSelectedTask(task);
+    setTaskIndex(index);
     setIsModalOpen(true);
   };
 
@@ -65,11 +69,12 @@ const TaskRectangles = ({
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedDepartment(null);
+    setSelectedTask(null);
+    setTaskIndex(null);
   };
 
   // Функция для нахождения позиции задачи по дате
   const findPosition = (date) => {
-    console.log(verticalLines);
     const lineIndex = verticalLines.findIndex((lineDate) => date <= lineDate);
     if (lineIndex === 0) return 0;
     if (lineIndex === -1) return 100;
@@ -150,7 +155,7 @@ const TaskRectangles = ({
 
     // Вычисление вертикальной позиции и высоты задачи
     const top =
-      ((deptIndex * 2 + 0.3) * 100) / (data.length * 2) +
+      ((deptIndex * 2 + 0.1) * 100) / (data.length * 2) +
       (index * departmentHeight) / (department.tasks.length || 1);
     const taskColor = getTaskColor(task, department, deptIndex);
 
@@ -182,7 +187,7 @@ const TaskRectangles = ({
           style={taskStyle}
           onMouseEnter={(e) => handleMouseEnter(e, task, department, taskColor)}
           onMouseLeave={handleMouseLeave}
-          onClick={() => handleDepartmentClick(department)}
+          onClick={() => handleTaskClick(department, task, index)}
         />
         {/* Рекурсивный вызов для рендеринга подзадач */}
         {showSubtasks && task.tasks && (
@@ -211,7 +216,7 @@ const TaskRectangles = ({
     >
       {/* Рендеринг задач для каждого отдела */}
       {data.map((department, deptIndex) => {
-        const departmentHeight = 100 / (data.length * 2);
+        const departmentHeight = 100 / (data.length * 1.1);
 
         return department.tasks.map((task, index) =>
           renderTask(task, deptIndex, index, departmentHeight, department)
@@ -228,11 +233,14 @@ const TaskRectangles = ({
         />
       )}
 
-      {!showSubtasks && selectedDepartment && (
+      {/* Модальное окно для отображения информации о департаменте или задаче */}
+      {selectedDepartment && (
         <DepartmentsModal
           isOpen={isModalOpen}
           onClose={handleModalClose}
           department={selectedDepartment}
+          task={selectedTask}
+          taskIndex={taskIndex}
         />
       )}
     </div>
